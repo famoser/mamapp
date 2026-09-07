@@ -1,0 +1,25 @@
+# IDE
+.idea
+.code
+.phpcs-cache
+.phpunit.cache
+
+# deployment
+.build
+.agnes
+
+# dependencies
+vendor
+node_modules
+
+# local config
+.npmrc
+*.local
+
+# Logs
+npm-debug.log*
+var/*.log
+
+# Local data
+var/transient
+var/persistent

@@ -1,0 +1,41 @@
+agnes:
+  version: 4
+
+config:
+  path: .agnes
+  encryption_key: '%env(ANGES_ENCRYPTION_KEY)%'
+  repository:
+    url: git@gitlab.com:agnes-config/mamapp.git
+
+build:
+  path: .build
+
+github:
+  api_token: '%env(GITHUB_API_TOKEN)%'
+  repository: famoser/mamapp
+
+data:
+  shared_folders:
+    - public/mammals
+    - var/transient
+    - var/persistent
+
+  files:
+    - path: .env.local
+      required: true
+      encrypted: true
+
+scripts:
+  build:
+    hook: build
+    script:
+      - 'composer install --verbose --prefer-dist --no-interaction --no-dev --optimize-autoloader --no-scripts'
+      - 'npm install'
+      - 'npm run build'
+      - 'rm -rf node_modules'
+
+tasks:
+  deploy_after_release:
+    after: release
+    task: deploy
+    arguments: { target: '*:*:*' }

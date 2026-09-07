@@ -1,0 +1,50 @@
+{
+  "type": "project",
+  "name": "famoser/mamapp",
+  "description": "Identify mammals in the wild",
+  "license": "MIT",
+  "require": {
+    "php": "^8.4",
+    "ext-bcmath": "*",
+    "ext-gmp": "*",
+    "ext-openssl": "*",
+    "ext-pdo": "*",
+    "ext-zip": "*",
+    "guzzlehttp/guzzle": "^7.0",
+    "monolog/monolog": "^3.3",
+    "slim/psr7": "^1.6",
+    "slim/slim": "^4.11",
+    "symfony/dotenv": "^7",
+    "symfony/yaml": "^7"
+  },
+  "require-dev": {
+    "famoser/agnes": "^v4",
+    "mockery/mockery": "^1.6",
+    "phpstan/phpstan": "^2",
+    "phpstan/phpstan-phpunit": "^2",
+    "phpunit/phpunit": "^12",
+    "squizlabs/php_codesniffer": "^4.0"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "platform": {
+      "php": "8.4"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "Famoser\\Mamapp\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Famoser\\Mamapp\\Test\\": "tests/"
+    }
+  },
+  "scripts": {
+    "stan": "phpstan analyse --no-progress --ansi --xdebug",
+    "test": "phpunit --configuration phpunit.xml --do-not-cache-result --colors=always --display-deprecations",
+    "test:coverage": "php -d xdebug.mode=coverage -r \"require 'vendor/bin/phpunit';\" -- --configuration phpunit.xml --do-not-cache-result --colors=always --coverage-clover build/logs/clover.xml --coverage-html build/coverage"
+  }
+}
