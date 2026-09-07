@@ -12,7 +12,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="container mw-100em">
+  <div class="container mw-mobile">
     <div class="my-5">
       <router-view v-if="!loading"></router-view>
     </div>
@@ -20,7 +20,7 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.mw-100em {
+.mw-mobile {
   max-width: 35em;
 }
 </style>

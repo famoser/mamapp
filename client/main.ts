@@ -1,8 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import './assets/main.scss'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import './build/fontawesome'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/pages/HomePage.vue'
 import MammalPage from '@/pages/MammalPage.vue'
@@ -20,7 +18,5 @@ const routes = [
 ]
 const router = createRouter({ history: createWebHistory(), routes })
 app.use(router)
-
-app.component('FontAwesomeIcon', FontAwesomeIcon as any)
 
 app.mount('#app')
