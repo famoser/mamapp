@@ -141,7 +141,7 @@ class Initializer
 
             $animal = array_find($animals, fn ($animal) => $animal['id'] === $image['species_id']);
             if (!$animal) {
-                $output->write("Error: Image database entry " . $count. " references species " . $image['species_id'] . " which cannot be found.\n");
+                $output->write("Error: Image database entry " . $count . " references species " . $image['species_id'] . " which cannot be found.\n");
                 return false;
             }
 
