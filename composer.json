@@ -12,6 +12,7 @@
     "ext-zip": "*",
     "guzzlehttp/guzzle": "^7.0",
     "monolog/monolog": "^3.3",
+    "phpoffice/phpspreadsheet": "^5.9",
     "slim/psr7": "^1.6",
     "slim/slim": "^4.11",
     "symfony/dotenv": "^7",
