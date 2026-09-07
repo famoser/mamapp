@@ -15,14 +15,14 @@ class Initializer
 
     public static function init(StreamInterface $output): void
     {
-        $path = self::SOURCE_DIR . DIRECTORY_SEPARATOR ."Arten.xlsx";
+        $path = self::SOURCE_DIR . DIRECTORY_SEPARATOR . "Arten.xlsx";
         if (!self::readAnimalsXlsx($output, $path, $animals)) {
             return;
         }
 
         $output->write("Found " . count($animals) . " animals.\n");
 
-        $path = self::IMAGES_SOURCE_DIR.DIRECTORY_SEPARATOR."App_Bilddatenbank.xlsx";
+        $path = self::IMAGES_SOURCE_DIR . DIRECTORY_SEPARATOR . "App_Bilddatenbank.xlsx";
         if (!self::readImagesXlsx($output, $path, $images)) {
             return;
         }
@@ -33,7 +33,7 @@ class Initializer
 
         $output->write("Added images.\n");
 
-        exec("rm -rf ".self::TARGET_DIR);
+        exec("rm -rf " . self::TARGET_DIR);
         if (!self::writeJsonToTargetDir($output, $animals, "mammals.json")) {
             return;
         }
@@ -65,7 +65,7 @@ class Initializer
      */
     private static function readAnimalsXlsx(StreamInterface $output, string $filePath, ?array &$data = null): bool
     {
-        $expectedHeader = ['Species_ID_prov','Deutscher Name','Wissenschaftlicher Name','mdd_id','iucn_status','Familie','Beschreibung','Ähnliche Arten','Lebensraum','Wie finden','Naturschutz'];
+        $expectedHeader = ['Species_ID_prov', 'Deutscher Name', 'Wissenschaftlicher Name', 'mdd_id', 'iucn_status', 'Familie', 'Beschreibung', 'Ähnliche Arten', 'Lebensraum', 'Wie finden', 'Naturschutz'];
         $cleanHeader = ['id', 'name', 'latinName', 'mddId', 'iucnStatus', 'family', 'description', 'similarSpecies', 'habitat', 'observe', 'conservation'];
         return self::xlsxToArray($output, $filePath, $expectedHeader, $cleanHeader, $data);
     }
@@ -78,8 +78,8 @@ class Initializer
      */
     private static function readImagesXlsx(StreamInterface $output, string $filePath, ?array &$data = null): bool
     {
-        $expectedHeader = ['Species_ID_prov','scientific_name','common_name_de','common_name_en','image_date','country','source','observation_url','image_url','creator','creator_username','copyright_holder','attribution_text','license','license_url','licence_screenshot_id','commercial_use','attribution_required','modification_allowed','modified','modification_description','download_date','creator_asked','creator_answer','file_path','file_format','notes'];
-        $cleanHeader = ['id','scientific_name','name','common_name_en','image_date','country','source','observation_url','image_url','creator','creator_username','copyright_holder','attribution_text','license','license_url','licence_screenshot_id','commercial_use','attribution_required','modification_allowed','modified','modification_description','download_date','creator_asked','creator_answer','file_path','file_format','notes'];
+        $expectedHeader = ['image_name','caption','role','eigen/fremd','mdd_id', 'Species_ID_prov', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'image_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
+        $cleanHeader = ['image_name','caption','role','eigen/fremd','mdd_id', 'species_id', 'scientific_name', 'name', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'image_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
         return self::xlsxToArray($output, $filePath, $expectedHeader, $cleanHeader, $data);
     }
 
@@ -90,21 +90,76 @@ class Initializer
     private static function addImages(StreamInterface $output, array $imagesDatabase, array &$animals): bool
     {
         foreach ($animals as &$animal) {
-            // find folder in SOURCE_DIR/Bilder with $animal["id"] as prefix
-            // in this folder, list all files that end in jpg / jpeg (not recursive)
-            // return false if no image found
-
-            // for each file, remove ending, and find an entry in $imagesDatabase where "image_name" === file_without_ending
-            // continue (skip) if no entry found
-            // compose the fullCaption as entry['caption'] . entry["attribution_text"] . entry['license']
-
-            // add all images to $animal['images'] as ['path' => ..., 'caption' => fullCaption]
+            $animal['images'] = [];
         }
 
+        // First loop: find and add images for each animal
+        foreach ($animals as &$animal) {
+            // Find folder in SOURCE_DIR/Bilder with $animal["id"] as prefix
+            $animalId = $animal["id"];
+            $pattern = self::IMAGES_SOURCE_DIR . DIRECTORY_SEPARATOR . $animalId . '*';
+            $folders = glob($pattern, GLOB_ONLYDIR);
 
+            if (!$folders || count($folders) !== 1) {
+                $output->write("Warning: Image folder not found or not unique for animal with id: " . $animalId . "\n");
+                continue;
+            }
+
+            $folder = $folders[0];
+
+            $jpgFiles = glob($folder . DIRECTORY_SEPARATOR . '*.jpg') ?: [];
+            $jpegFiles = glob($folder . DIRECTORY_SEPARATOR . '*.jpeg') ?: [];
+            $imageFiles = array_merge($jpgFiles, $jpegFiles);
+
+            foreach ($imageFiles as $imagePath) {
+                // Remove file extension to get image name
+                $filename = basename($imagePath);
+                $imageNameWithoutExt = pathinfo($filename, PATHINFO_FILENAME);
+
+                // Find entry in $imagesDatabase
+                $imageEntry = null;
+                foreach ($imagesDatabase as $dbImage) {
+                    if (isset($dbImage['image_name']) && pathinfo($dbImage['image_name'], PATHINFO_FILENAME) === $imageNameWithoutExt) {
+                        $imageEntry = $dbImage;
+                        break;
+                    }
+                }
+
+                // Skip if no entry found
+                if ($imageEntry === null) {
+                    continue;
+                }
+
+                // Compose the fullCaption
+                $fullCaption = $imageEntry['caption'] . " " . $imageEntry['attribution_text'];
+                if (!empty($imageEntry['license'])) {
+                    $fullCaption .= " " . $imageEntry['license'];
+                }
+
+                // Add image to animal's images array
+                $animal['images'][] = [
+                    'path' => 'mammals/' . $animalId . '/' . $filename,
+                    'caption' => $fullCaption
+                ];
+
+
+            }
+        }
+
+        // Second loop: verify all images in database have corresponding animals and image files
+        unset($animal);
         foreach ($imagesDatabase as $image) {
-            // find $animal with same 'id' key in $animals (return false if not found)
-            // check that there is a corresponding image in $animal['images']['path']
+            $animal = array_find($animals, fn ($animal) => $animal['id'] === $image['species_id']);
+            if (!$animal) {
+                $output->write("Error: Image database entry references species " . $image['species_id'] . " which cannot be found.\n");
+                return false;
+            }
+
+            $animalImage = array_find($animal['images'], fn ($animalImage) => str_starts_with($animalImage['path'], $image['file_path']));
+            if (!$animalImage) {
+                $output->write("Warning: Image database references image " . $image['file_path']." which cannot be found.\n");
+                return false;
+            }
         }
 
         return true;
@@ -126,7 +181,7 @@ class Initializer
 
         $data = [];
         $isFirstRow = true;
-        $expectedHeader = ['Species_ID_prov','Deutscher Name','Wissenschaftlicher Name','mdd_id','iucn_status','Familie','Beschreibung','Ähnliche Arten','Lebensraum','Wie finden','Naturschutz'];
+        $expectedHeader = ['Species_ID_prov', 'Deutscher Name', 'Wissenschaftlicher Name', 'mdd_id', 'iucn_status', 'Familie', 'Beschreibung', 'Ähnliche Arten', 'Lebensraum', 'Wie finden', 'Naturschutz'];
         $cleanHeader = ['id', 'name', 'latinName', 'mddId', 'iucnStatus', 'family', 'description', 'similarSpecies', 'habitat', 'observe', 'conservation'];
 
         foreach ($worksheet->getRowIterator() as $row) {
