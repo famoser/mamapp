@@ -26,15 +26,17 @@ const router = useRouter()
           <i>{{ animal.latinName }}</i>
         </p>
       </div>
-      <i class="icon icon-thumbtack-empty ms-2" @click="emit('toggle-favorite')"></i>
+      <button class="btn btn-icon ms-2">
+        <i class="icon" :class="{ 'icon-thumbtack-full': isFavorite, 'icon-thumbtack-empty': !isFavorite }" @click.stop="emit('toggle-favorite')"></i>
+      </button>
     </div>
   </div>
 </template>
 
 <style scoped>
 .animal-image {
-  width: 10em;
-  height: auto;
+  width: 8em;
+  height: 4em;
   flex-shrink: 0;
   object-fit: cover;
 }
