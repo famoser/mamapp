@@ -1,0 +1,19 @@
+{
+  "pages": {
+    "home": {
+      "title": "Liste"
+    },
+    "mammal": {
+      "title": "Wahlquittung hochladen"
+    }
+  },
+  "layout": {},
+  "shared": {
+    "reset_button": {
+      "reset": "Zurücksetzen"
+    },
+    "yes": "Ja",
+    "verify": "Überprüfen",
+    "no": "Nein"
+  }
+}
