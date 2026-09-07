@@ -11,6 +11,11 @@
   background-color: var(--brand-primary);
 }
 
+.btn > .icon {
+  width: 2em;
+  height: 2em;
+}
+
 /* fontawesome https://fontawesome.com/ svg; convert to data uri with https://www.svgviewer.dev/svg-to-data-uri */
 .icon-thumbtack-full {
   mask-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NDAgNjQwIj48cGF0aCBkPSJNMTYwIDk2QzE2MCA3OC4zIDE3NC4zIDY0IDE5MiA2NEw0NDggNjRDNDY1LjcgNjQgNDgwIDc4LjMgNDgwIDk2QzQ4MCAxMTMuNyA0NjUuNyAxMjggNDQ4IDEyOEw0MTguNSAxMjhMNDI4LjggMjYyLjFDNDY1LjkgMjgzLjMgNDk0LjYgMzE4LjUgNTA3IDM2MS44TDUxMC44IDM3NS4yQzUxMy42IDM4NC45IDUxMS42IDM5NS4yIDUwNS42IDQwMy4zQzQ5OS42IDQxMS40IDQ5MCA0MTYgNDgwIDQxNkwxNjAgNDE2QzE1MCA0MTYgMTQwLjUgNDExLjMgMTM0LjUgNDAzLjNDMTI4LjUgMzk1LjMgMTI2LjUgMzg0LjkgMTI5LjMgMzc1LjJMMTMzIDM2MS44QzE0NS40IDMxOC41IDE3NCAyODMuMyAyMTEuMiAyNjIuMUwyMjEuNSAxMjhMMTkyIDEyOEMxNzQuMyAxMjggMTYwIDExMy43IDE2MCA5NnpNMjg4IDQ2NEwzNTIgNDY0TDM1MiA1NzZDMzUyIDU5My43IDMzNy43IDYwOCAzMjAgNjA4QzMwMi4zIDYwOCAyODggNTkzLjcgMjg4IDU3NkwyODggNDY0eiIvPjwvc3ZnPg==');
