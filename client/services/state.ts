@@ -1,7 +1,7 @@
 import { ref, watch } from 'vue'
 
 // Persistent storage key
-const STORAGE_KEY = 'mammals'
+const STORAGE_KEY = 'species'
 
 const loadFavorites = (): string[] => {
   const stored = localStorage.getItem(STORAGE_KEY)

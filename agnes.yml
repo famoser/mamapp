@@ -16,7 +16,7 @@ github:
 
 data:
   shared_folders:
-    - public/mammals
+    - public/species
     - var/transient
     - var/persistent
 
