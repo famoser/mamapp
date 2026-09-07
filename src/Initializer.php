@@ -51,9 +51,10 @@ class Initializer
     }
 
     /**
-     * @param string[] $data
+     * @param mixed[] $data
+     * @param-out mixed[] $data
      *
-     * @phpstan-assert-if-true string[] $data
+     * @phpstan-assert-if-true mixed[] $data
      */
     private static function xlsxToArray(StreamInterface $output, string $filePath, ?array &$data = null): bool
     {
@@ -61,21 +62,26 @@ class Initializer
         $worksheet = $spreadsheet->getActiveSheet();
 
         $data = [];
-        $headers = [];
         $isFirstRow = true;
         $expectedHeader = ['Species_ID_prov','Deutscher Name','Wissenschaftlicher Name','mdd_id','iucn_status','Familie','Beschreibung','Ähnliche Arten','Lebensraum','Wie finden','Naturschutz'];
-        $cleanHeader = ['id', 'name', 'latinName', 'mddId', 'iucnStatus', 'family', 'similarSpecies', 'habitat', 'observe', 'convervation'];
+        $cleanHeader = ['id', 'name', 'latinName', 'mddId', 'iucnStatus', 'family', 'description', 'similarSpecies', 'habitat', 'observe', 'conservation'];
 
         foreach ($worksheet->getRowIterator() as $row) {
             $rowData = [];
 
             foreach ($row->getCellIterator() as $cell) {
-                $rowData[] = $cell->getValue();
+                $value = $cell->getValueString();
+                if (!$value) {
+                    break;
+                }
+
+                $rowData[] = $value;
             }
 
             if ($isFirstRow) {
-                if ($rowData !== $expectedHeader) {
-                    $output->write("Fail: Columns not in expected format / order. Expected: " . join(", ", $expectedHeader) . "Actual: " . join(", ", $rowData) . "\n");
+                $diff = array_diff($rowData, $expectedHeader);
+                if ($diff != []) {
+                    $output->write("Fail: Columns not in expected format / order. Expected: " . join(", ", $expectedHeader) . " Actual: " . join(", ", $rowData) . " Diff: " . join(", ", $diff) . "\n");
                     return false;
                 }
 
@@ -83,7 +89,7 @@ class Initializer
                 continue;
             }
 
-            if (empty($rowData[0])) {
+            if (count($rowData) !== count($cleanHeader)) {
                 continue;
             }
 
