@@ -182,7 +182,7 @@ class Initializer
             if ($isFirstRow) {
                 foreach ($expectedHeader as $index => $value) {
                     if ($rowData[$index] !== $value) {
-                        $output->write("Fail: Columns not in expected format / order. Expected: " . join(", ", $expectedHeader) . " Actual: " . join(", ", $rowData) . " Diff: " . join(", ", $diff) . "\n");
+                        $output->write("Fail: Columns not in expected format / order. Expected: " . join(", ", $expectedHeader) . " Actual: " . join(", ", $rowData) . "\n");
                         return false;
                     }
                 }
