@@ -28,6 +28,7 @@ export default defineConfig({
   },
 
   root: 'client',
+  publicDir: '../public',
 
   build: {
     // output dir for production build
