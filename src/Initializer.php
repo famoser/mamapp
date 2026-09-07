@@ -27,34 +27,17 @@ class Initializer
             return;
         }
 
+        exec("rm -rf " . self::TARGET_DIR);
         if (!self::addImages($output, $images, $animals)) {
             return;
         }
-
         $output->write("Added images.\n");
 
-        exec("rm -rf " . self::TARGET_DIR);
         if (!self::writeJsonToTargetDir($output, $animals, "mammals.json")) {
             return;
         }
 
         $output->write("Created mammals.json.\n");
-    }
-
-    /**
-     * @phpstan-assert-if-true string $path
-     */
-    private static function findAnimalsXlsx(StreamInterface $output, ?string &$path): bool
-    {
-        $files = glob(self::SOURCE_DIR . DIRECTORY_SEPARATOR . '*.xlsx');
-
-        if (!$files || count($files) !== 1) {
-            $output->write("No unique XLSX file found in: self::SOURCE_DIR\n");
-            return false;
-        }
-
-        $path = $files[0];
-        return true;
     }
 
     /**
@@ -119,7 +102,7 @@ class Initializer
                 // Find entry in $imagesDatabase
                 $imageEntry = null;
                 foreach ($imagesDatabase as $dbImage) {
-                    if (isset($dbImage['image_name']) && pathinfo($dbImage['image_name'], PATHINFO_FILENAME) === $imageNameWithoutExt) {
+                    if (isset($dbImage['image_name']) && $dbImage['image_name'] === $imageNameWithoutExt) {
                         $imageEntry = $dbImage;
                         break;
                     }
@@ -136,13 +119,16 @@ class Initializer
                     $fullCaption .= " " . $imageEntry['license'];
                 }
 
+                // copy to out directory
+                $targetDir = self::TARGET_DIR . "/images/" . $animalId;
+                mkdir($targetDir, recursive: true);
+                copy($imagePath, $targetDir . "/" . $filename);
+
                 // Add image to animal's images array
                 $animal['images'][] = [
-                    'path' => 'mammals/' . $animalId . '/' . $filename,
+                    'path' => self::MAMMALS_DIR . '/images/' . $animalId . '/' . $filename,
                     'caption' => $fullCaption
                 ];
-
-
             }
         }
 
@@ -157,7 +143,7 @@ class Initializer
 
             $animalImage = array_find($animal['images'], fn ($animalImage) => str_starts_with($animalImage['path'], $image['file_path']));
             if (!$animalImage) {
-                $output->write("Warning: Image database references image " . $image['file_path']." which cannot be found.\n");
+                $output->write("Warning: Image database references image " . $image['file_path'] . " which cannot be found.\n");
                 return false;
             }
         }
