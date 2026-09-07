@@ -3,9 +3,17 @@ $yiq-contrasted-threshold: 160;
 $custom-control-cursor: pointer;
 $enable-shadows: true;
 
-@use 'bootstrap/scss/bootstrap';
+@use 'bootstrap/scss/bootstrap' with (
+  $primary: #88CC88
+);
 @use 'nano-noty/src/noty';
 @use 'nano-noty/src/themes/bootstrap-v5';
+@use 'icons';
+
+:root {
+  --brand-primary: #88CC88;
+  --brand-primary-dark: #004400;
+}
 
 .bg-body-tertiary {
   background: #f5f5f5;
