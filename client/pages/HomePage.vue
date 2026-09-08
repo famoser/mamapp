@@ -27,19 +27,33 @@ const animalsByFamily = computed(() => {
 
   return map
 })
+
+const favoriteAnimals = computed(() => {
+  return species.filter((s) => favorites.value.includes(s.id))
+})
 </script>
 
 <template>
   <menu-layout>
-    <div class="input-group flex-grow-1 w-100">
+    <div class="input-group mw-20em me-1">
       <span class="input-group-text">
         <i class="icon icon-magnifying-glass icon-sm" />
       </span>
       <input type="text" class="form-control" placeholder="Spezies suchen..." v-model="search" />
     </div>
   </menu-layout>
-  <h3 class="mb-3">{{ t('pages.home.title') }}</h3>
-  <div class="d-flex flex-column gap-2">
+  <div class="mb-5" v-if="favoriteAnimals.length > 0">
+    <h3 class="mb-2">Pinned</h3>
+    <family-collapse family="Pinned" :animals="favoriteAnimals" :favorites="favorites" @toggle-favorite="toggleFavorite($event.id)" :header="false" />
+  </div>
+
+  <div class="d-flex flex-column gap-5">
     <family-collapse v-for="[family, animals] in animalsByFamily.entries()" :key="family" :family="family" :animals="animals" :favorites="favorites" @toggle-favorite="toggleFavorite($event.id)" />
   </div>
 </template>
+
+<style scoped>
+.mw-20em {
+  max-width: 20em;
+}
+</style>
