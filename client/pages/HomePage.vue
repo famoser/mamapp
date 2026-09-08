@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useTranslator } from '@/locales/translator'
 import { useDatabase } from '@/services/data'
 import FamilyCollapse from '@/components/FamilyCollapse.vue'
 import { computed, ref } from 'vue'
@@ -7,7 +6,6 @@ import { useMammalsState } from '@/services/state'
 import type { Animal } from '@/domain/Animal'
 import MenuLayout from '@/components/MenuLayout.vue'
 
-const { t } = useTranslator()
 const { favorites, toggleFavorite } = useMammalsState()
 
 const search = ref('')
