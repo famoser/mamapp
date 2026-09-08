@@ -1,30 +1,51 @@
 <script setup lang="ts">
 import AnimalPreview from '@/components/AnimalPreview.vue'
 import type { Animal } from '@/domain/Animal'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { Collapse } from 'bootstrap'
 
-defineProps<{
-  family: string
-  animals: Animal[]
-  favorites: string[]
-}>()
+withDefaults(
+  defineProps<{
+    family: string
+    animals: Animal[]
+    favorites: string[]
+    header?: boolean
+  }>(),
+  { header: true }
+)
 
 const emit = defineEmits<{
   (e: 'toggle-favorite', value: Animal): void
 }>()
 
-const isCollapsed = ref(false)
+const collapseElement = ref<HTMLElement | null>(null)
+let collapseInstance: Collapse | null = null
+const collapseState = ref(false)
+
+onMounted(() => {
+  if (collapseElement.value) {
+    collapseInstance = new Collapse(collapseElement.value, {
+      toggle: false
+    })
+  }
+})
+
+const toggleCollapse = () => {
+  collapseState.value = !collapseState.value
+  collapseInstance?.toggle()
+}
 </script>
 
 <template>
-  <div class="card">
-    <div class="card-header" role="button" @click="isCollapsed = !isCollapsed" style="cursor: pointer">
-      <div class="d-flex align-items-center">
-        <i :class="['fa', isCollapsed ? 'fa-chevron-right' : 'fa-chevron-down', 'me-2']"></i>
-        {{ family }}
-      </div>
+  <div>
+    <div v-if="header" class="d-flex justify-content-between text-primary-emphasis p-2 bg-primary-subtle rounded-top-2" role="button" @click="toggleCollapse" :aria-expanded="true" aria-controls="collapse-body">
+      <p class="mb-1 fw-bold">{{ family }}</p>
+      <span class="d-flex align-items-center gap-2 text-muted small">
+        <span>{{ animals.length }} species</span>
+        <i class="icon icon-chevron-left" :class="{ 'animate-turn-ccw': !collapseState }"></i>
+      </span>
     </div>
-    <div v-show="!isCollapsed" class="card-body">
+    <div ref="collapseElement" id="collapse-body" class="collapse show bg-primary-subtler p-1">
       <div class="d-flex flex-column gap-1">
         <animal-preview v-for="animal in animals" :key="animal.id" :animal="animal" :is-favorite="favorites.includes(animal.id)" @toggle-favorite="emit('toggle-favorite', animal)" />
       </div>

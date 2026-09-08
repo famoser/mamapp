@@ -15,7 +15,7 @@ const router = useRouter()
 </script>
 
 <template>
-  <div class="card card-horizontal" @click="router.push('/species/' + animal.id)">
+  <div class="card card-horizontal card-button" role="button" @click="router.push('/species/' + animal.id)">
     <img :src="`${animal.images[0]?.path}`" :alt="animal.name" class="card-img-left animal-image me-3" />
     <div class="card-body d-flex align-items-start">
       <div class="flex-grow-1">
@@ -40,6 +40,10 @@ const router = useRouter()
 }
 
 .animal-image {
-  width: 9em;
+  width: 8em;
+}
+
+.card-button:hover {
+  background-color: var(--brand-primary-light);
 }
 </style>

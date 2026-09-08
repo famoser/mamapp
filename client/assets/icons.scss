@@ -8,6 +8,7 @@
   mask-position: center;
 
   background-color: var(--brand-primary-dark);
+  transition: transform 0.3s ease-in-out;
 }
 
 .icon-sm {
@@ -23,6 +24,10 @@
 .icon-xl {
   width: 3em;
   height: 3em;
+}
+
+.animate-turn-ccw {
+  transform: rotate(-90deg);
 }
 
 .btn-icon {

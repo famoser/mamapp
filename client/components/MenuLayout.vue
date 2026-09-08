@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { Offcanvas } from 'bootstrap'
 import MenuEntry from '@/components/MenuEntry.vue'
 import MenuHeader from '@/components/MenuHeader.vue'
 
-const router = useRouter()
 const offcanvasElement = ref<HTMLElement | null>(null)
 let offcanvasInstance: Offcanvas | null = null
 
@@ -21,8 +19,8 @@ const toggleMenu = () => {
 </script>
 
 <template>
-  <nav class="navbar sticky-top border-bottom bg-white mb-3">
-    <div class="d-flex gap-2">
+  <nav class="navbar sticky-top border-bottom bg-primary-subtler mb-3">
+    <div class="d-flex gap-2 justify-content-between w-100">
       <button class="btn btn-icon py-1" @click="toggleMenu" aria-label="Toggle menu">
         <i class="icon icon-bars" />
       </button>
@@ -33,7 +31,7 @@ const toggleMenu = () => {
   <div class="d-flex"></div>
 
   <!-- Offcanvas Sidebar Menu -->
-  <div ref="offcanvasElement" class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarLabel">
+  <div ref="offcanvasElement" class="offcanvas offcanvas-start bg-primary-subtler" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarLabel">
     <div class="offcanvas-header border-bottom">
       <div class="d-flex gap-3">
         <i class="icon icon-brand icon-xl align-self-center" />
@@ -75,5 +73,4 @@ const toggleMenu = () => {
 .byline {
   font-size: 0.8em;
 }
-
 </style>
