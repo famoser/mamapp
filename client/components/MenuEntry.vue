@@ -10,7 +10,7 @@ withDefaults(
 </script>
 
 <template>
-  <div class="d-flex gap-3 p-2 mb-1 rounded-2 menu-entry" :class="{ active: active }">
+  <div class="d-flex gap-4 p-2 mb-1 rounded-2 menu-entry" :class="{ active: active }">
     <i class="icon" :class="icon"></i>
     <span class="text-primary-emphasis" :class="{ 'fw-bold': active }">{{ label }}</span>
   </div>
