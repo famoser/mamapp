@@ -14,7 +14,7 @@ setGlobalTranslator(translator)
 
 const routes = [
   { path: '/', component: HomePage },
-  { path: '/mammal/:id', component: MammalPage }
+  { path: '/species/:id', component: MammalPage }
 ]
 const router = createRouter({ history: createWebHistory(), routes })
 app.use(router)

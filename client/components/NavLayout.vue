@@ -36,7 +36,7 @@ const toggleMenu = () => {
       <div class="d-flex gap-3">
         <i class="icon icon-brand icon-xl align-self-center" />
         <div>
-          <h2 class="mb-0">Mammal Guide Europe</h2>
+          <h1 class="mb-0">Mammal Guide Europe</h1>
           <p class="byline text-muted mb-0">Explore · Learn · Protect</p>
         </div>
       </div>
