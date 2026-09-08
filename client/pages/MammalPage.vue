@@ -5,6 +5,7 @@ import { useDatabase } from '@/services/data'
 import { computed } from 'vue'
 import ImageCarousel from '@/components/ImageCarousel.vue'
 import NavLayout from '@/components/NavLayout.vue'
+import AnimalText from '@/components/AnimalText.vue'
 
 const route = useRoute()
 const speciesId = computed(() => route.params.id)
@@ -40,8 +41,7 @@ const router = useRouter()
 <template>
   <div v-if="animal">
     <nav-layout>
-      <div v-if="favorites.includes(animal.id) && favorites.length > 1" class="align-self-center text-muted">
-        {{ currentAnimalIndex + 1 }} / {{ favorites.length }} Pinned</div>
+      <div v-if="favorites.includes(animal.id) && favorites.length > 1" class="align-self-center text-muted">{{ currentAnimalIndex + 1 }} / {{ favorites.length }} Pinned</div>
       <div v-if="favorites.includes(animal.id) && favorites.length > 1">
         <button class="btn btn-icon py-1" @click="router.push('/species/' + previousAnimalId)" aria-label="Previous animal">
           <i class="icon icon-chevron-left" />
@@ -57,13 +57,14 @@ const router = useRouter()
       <i>{{ animal.latinName }}</i>
     </p>
 
-    <img :src="animal.mapSrc" class="img-fluid" :alt="'Map of ' + animal.name">
+    <div class="d-flex flex-column gap-5">
+      <img :src="animal.mapSrc" class="img-fluid border-1 border" :alt="'Map of ' + animal.name" />
 
-    <p>{{ animal.description }}</p>
-
-    <p>{{ animal.similarSpecies }}</p>
-    <p>{{ animal.habitat }}</p>
-    <p>{{ animal.observe }}</p>
-    <p>{{ animal.conservation }}</p>
+      <animal-text icon="icon-books" label="Beschreibung" :text="animal.description" />
+      <animal-text icon="icon-almost-equal-to" label="Ähnliche Spezies" :text="animal.similarSpecies" />
+      <animal-text icon="icon-globe" label="Lebensraum" :text="animal.habitat" />
+      <animal-text icon="icon-binoculars" label="Wie beobachten" :text="animal.observe" />
+      <animal-text icon="icon-leaf" label="Schutzstatus" :text="animal.conservation" />
+    </div>
   </div>
 </template>
