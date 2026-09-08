@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { Offcanvas } from 'bootstrap'
 import MenuEntry from '@/components/MenuEntry.vue'
+import MenuHeader from '@/components/MenuHeader.vue'
 
 const router = useRouter()
 const offcanvasElement = ref<HTMLElement | null>(null)
@@ -31,7 +32,7 @@ const toggleMenu = () => {
   <div ref="offcanvasElement" class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarLabel">
     <div class="offcanvas-header border-bottom">
       <div class="d-flex gap-3">
-        <i class="icon icon-brand icon-lg align-self-center" />
+        <i class="icon icon-brand icon-xl align-self-center" />
         <div>
           <h1 class="mb-0">Mammal Guide Europe</h1>
           <p class="byline text-muted mb-0">Explore · Learn · Protect</p>
@@ -41,24 +42,24 @@ const toggleMenu = () => {
     </div>
 
     <div class="offcanvas-body">
-      <div class="mb-5">
-        <h3 class="ms-2">Explore</h3>
+      <div class="mb-5 mt-2">
+        <menu-header label="Explore" />
         <menu-entry label="Species list" icon="icon-list" :active="true" @click="toggleMenu" />
         <menu-entry label="Identify" icon="icon-magnifying-glass" />
       </div>
       <div class="mb-5">
-        <h3 class="ms-2">Learn</h3>
+        <menu-header label="Learn" />
         <menu-entry label="Observation methods" icon="icon-binoculars" />
         <menu-entry label="Ethics" icon="icon-leaf" />
       </div>
       <div class="mb-5">
-        <h3 class="ms-2">About</h3>
+        <menu-header label="About" />
         <menu-entry label="Contact us" icon="icon-envelope" />
         <menu-entry label="Acknowledgements" icon="icon-award" />
         <menu-entry label="Sources" icon="icon-books" />
       </div>
       <div>
-        <h3 class="ms-2">Preferences</h3>
+        <menu-header label="Preferences" />
         <menu-entry label="Settings" icon="icon-gear" />
         <menu-entry label="Language" icon="icon-globe" />
       </div>
@@ -67,7 +68,7 @@ const toggleMenu = () => {
 </template>
 
 <style scoped>
-  .byline {
-    font-size: 0.8em;
-  }
+.byline {
+  font-size: 0.8em;
+}
 </style>
