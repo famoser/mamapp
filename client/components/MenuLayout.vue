@@ -2,6 +2,7 @@
 import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { Offcanvas } from 'bootstrap'
+import MenuEntry from '@/components/MenuEntry.vue'
 
 const router = useRouter()
 const offcanvasElement = ref<HTMLElement | null>(null)
@@ -16,15 +17,6 @@ onMounted(() => {
 const toggleMenu = () => {
   offcanvasInstance?.toggle()
 }
-
-const closeMenu = () => {
-  offcanvasInstance?.hide()
-}
-
-const navigateTo = (path: string) => {
-  router.push(path)
-  closeMenu()
-}
 </script>
 
 <template>
@@ -38,35 +30,44 @@ const navigateTo = (path: string) => {
   <!-- Offcanvas Sidebar Menu -->
   <div ref="offcanvasElement" class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarLabel">
     <div class="offcanvas-header border-bottom">
-      <h5 class="offcanvas-title" id="sidebarLabel">Menu</h5>
+      <div class="d-flex gap-3">
+        <i class="icon icon-brand icon-lg align-self-center" />
+        <div>
+          <h1 class="mb-0">Mammal Guide Europe</h1>
+          <p class="byline text-muted mb-0">Explore · Learn · Protect</p>
+        </div>
+      </div>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
-    <div class="offcanvas-body p-0">
-      <!-- Explore Section -->
-      <div class="list-group list-group-flush">
-        <div class="px-3 py-2">
-          <h6 class="text-uppercase small fw-bold text-success">Explore</h6>
-        </div>
-        <a href="#" @click.prevent="navigateTo('/')" class="list-group-item list-group-item-action"> Home </a>
-        <a href="#" @click.prevent="" class="list-group-item list-group-item-action"> Species </a>
+    <div class="offcanvas-body">
+      <div class="mb-5">
+        <h3 class="ms-2">Explore</h3>
+        <menu-entry label="Species list" icon="icon-list" :active="true" @click="toggleMenu" />
+        <menu-entry label="Identify" icon="icon-magnifying-glass" />
       </div>
-
-      <!-- Learn Section -->
-      <div class="list-group list-group-flush mt-3">
-        <div class="px-3 py-2">
-          <h6 class="text-uppercase small fw-bold text-success">Learn</h6>
-        </div>
-        <a href="#" @click.prevent="" class="list-group-item list-group-item-action"> Guides </a>
-        <a href="#" @click.prevent="" class="list-group-item list-group-item-action"> Taxonomy </a>
+      <div class="mb-5">
+        <h3 class="ms-2">Learn</h3>
+        <menu-entry label="Observation methods" icon="icon-binoculars" />
+        <menu-entry label="Ethics" icon="icon-leaf" />
       </div>
-
-      <!-- About Section -->
-      <div class="list-group list-group-flush mt-3">
-        <div class="px-3 py-2">
-          <h6 class="text-uppercase small fw-bold text-success">About</h6>
-        </div>
+      <div class="mb-5">
+        <h3 class="ms-2">About</h3>
+        <menu-entry label="Contact us" icon="icon-envelope" />
+        <menu-entry label="Acknowledgements" icon="icon-award" />
+        <menu-entry label="Sources" icon="icon-books" />
+      </div>
+      <div>
+        <h3 class="ms-2">Preferences</h3>
+        <menu-entry label="Settings" icon="icon-gear" />
+        <menu-entry label="Language" icon="icon-globe" />
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+  .byline {
+    font-size: 0.8em;
+  }
+</style>
