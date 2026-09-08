@@ -10,6 +10,7 @@ class Initializer
     public const string SPECIES_DIR = 'species';
     public const string SOURCE_DIR = PathHelper::VAR_PERSISTENT_DIR . DIRECTORY_SEPARATOR . self::SPECIES_DIR;
     public const string IMAGES_SOURCE_DIR = self::SOURCE_DIR . DIRECTORY_SEPARATOR . 'Bilder';
+    public const string MAPS_SOURCE_DIR = self::SOURCE_DIR . DIRECTORY_SEPARATOR . 'Karten';
     public const string CACHE_DIR = PathHelper::VAR_TRANSIENT_DIR . DIRECTORY_SEPARATOR . self::SPECIES_DIR;
     public const string TARGET_DIR = PathHelper::PUBLIC_DIR . DIRECTORY_SEPARATOR . self::SPECIES_DIR;
 
@@ -32,6 +33,11 @@ class Initializer
             return;
         }
         $output->write("Added images.\n");
+
+        if (!self::addMapImages($output, $animals)) {
+            return;
+        }
+        $output->write("Added map images.\n");
 
         if (!self::writeJsonToTargetDir($output, $animals, "species.json")) {
             return;
@@ -61,8 +67,8 @@ class Initializer
      */
     private static function readImagesXlsx(StreamInterface $output, string $filePath, ?array &$data = null): bool
     {
-        $expectedHeader = ['image_name','caption','role','eigen/fremd','mdd_id', 'Species_ID_prov', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'image_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
-        $cleanHeader = ['image_name','caption','role','eigen/fremd','mdd_id', 'species_id', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'image_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
+        $expectedHeader = ['image_name', 'caption', 'role', 'eigen/fremd', 'mdd_id', 'Species_ID_prov', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'image_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
+        $cleanHeader = ['image_name', 'caption', 'role', 'eigen/fremd', 'mdd_id', 'species_id', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'image_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
         return self::xlsxToArray($output, $filePath, $expectedHeader, $cleanHeader, $data);
     }
 
@@ -76,11 +82,10 @@ class Initializer
             $animal['images'] = [];
         }
 
-        // First loop: find and add images for each animal
         foreach ($animals as &$animal) {
             // Find folder in SOURCE_DIR/Bilder with $animal["id"] as prefix
             $animalId = $animal["id"];
-            $pattern = self::IMAGES_SOURCE_DIR . DIRECTORY_SEPARATOR . $animalId . '*';
+            $pattern = self::IMAGES_SOURCE_DIR . DIRECTORY_SEPARATOR . $animalId . '_*';
             $folders = glob($pattern, GLOB_ONLYDIR);
 
             if (!$folders || count($folders) !== 1) {
@@ -127,7 +132,7 @@ class Initializer
 
                 // Add image to animal's images array
                 $animal['images'][] = [
-                    'path' => self::SPECIES_DIR . '/images/' . $animalId . '/' . $filename,
+                    'path' => "/" . self::SPECIES_DIR . '/images/' . $animalId . '/' . $filename,
                     'caption' => $fullCaption
                 ];
             }
@@ -140,17 +145,50 @@ class Initializer
                 continue;
             }
 
-            $animal = array_find($animals, fn ($animal) => $animal['id'] === $image['species_id']);
+            $animal = array_find($animals, fn($animal) => $animal['id'] === $image['species_id']);
             if (!$animal) {
                 $output->write("Error: Image database entry " . $count . " references species " . $image['species_id'] . " which cannot be found.\n");
                 return false;
             }
 
-            $animalImage = array_find($animal['images'], fn ($animalImage) => str_starts_with($animalImage['path'], $image['file_path']));
+            $animalImage = array_find($animal['images'], fn($animalImage) => str_starts_with($animalImage['path'], $image['file_path']));
             if (!$animalImage) {
                 $output->write("Warning: Image database references image " . $image['file_path'] . " which cannot be found.\n");
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param mixed[] $animals
+     */
+    private static function addMapImages(StreamInterface $output, array &$animals): bool
+    {
+        foreach ($animals as &$animal) {
+            // Find map in SOURCE_DIR/Karten with $animal["id"] as prefix
+            $animalId = $animal["id"];
+            $pattern = self::MAPS_SOURCE_DIR . DIRECTORY_SEPARATOR . $animalId . '_*';
+            $maps = glob($pattern);
+
+            if (!$maps || count($maps) !== 1) {
+                $output->write("Warning: Map not found or not unique for animal with id: " . $animalId . "\n");
+                continue;
+            }
+
+            $mapPath = $maps[0];
+
+            // Remove file extension to get image name
+            $filename = basename($mapPath);
+
+            // copy to out directory
+            $targetDir = self::TARGET_DIR . "/maps";
+            mkdir($targetDir, recursive: true);
+            copy($mapPath, $targetDir . "/" . $filename);
+
+            // Add image to animal's images array
+            $animal['mapPath'] = "/" . self::SPECIES_DIR . '/maps/' . $filename;
         }
 
         return true;
