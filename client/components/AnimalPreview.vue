@@ -16,7 +16,7 @@ const router = useRouter()
 
 <template>
   <div class="card card-horizontal card-button" role="button" @click="router.push('/species/' + animal.id)">
-    <img :src="`${animal.images[0]?.path}`" :alt="animal.name" class="card-img-left animal-image me-3" />
+    <img :src="`${animal.images[0]?.src}`" :alt="animal.name" class="card-img-left animal-image me-3" />
     <div class="card-body d-flex align-items-start">
       <div class="flex-grow-1">
         <h2 class="mb-1">

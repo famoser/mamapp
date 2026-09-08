@@ -8,10 +8,11 @@ export type Animal = {
   habitat: string
   observe: string
   conservation: string
-  images: Image[]
+  images: Image[],
+  mapSrc: string
 }
 
 export type Image = {
-  path: string
+  src: string
   caption: string
 }

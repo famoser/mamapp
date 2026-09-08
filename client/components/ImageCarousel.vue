@@ -36,8 +36,8 @@ const next = () => {
 <template>
   <div ref="carouselElement" class="carousel slide">
     <div class="carousel-inner">
-      <div class="carousel-item position-relative" v-for="image in images" :key="image.path">
-        <img :src="image.path" class="d-block w-100 rounded-top-2" :alt="image.caption" />
+      <div class="carousel-item position-relative" v-for="image in images" :key="image.src">
+        <img :src="image.src" class="d-block w-100 rounded-top-2" :alt="image.caption" />
         <p class="p-1 bg-black text-white mb-0 rounded-bottom-1">
           {{ image.caption }}
         </p>
