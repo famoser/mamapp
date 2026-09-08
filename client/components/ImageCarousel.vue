@@ -12,18 +12,22 @@ let carouselInstance: Carousel | null = null
 
 onMounted(() => {})
 
-watch(() => props.images, () => {
-  nextTick(() => {
-    if (carouselElement.value) {
-      const firstImage = carouselElement.value.querySelector('.carousel-item')
-      if (firstImage) {
-        ;(firstImage as HTMLElement).classList.add('active')
-      }
+watch(
+  () => props.images,
+  () => {
+    nextTick(() => {
+      if (carouselElement.value) {
+        const firstImage = carouselElement.value.querySelector('.carousel-item')
+        if (firstImage) {
+          ;(firstImage as HTMLElement).classList.add('active')
+        }
 
-      carouselInstance = new Carousel(carouselElement.value)
-    }
-  })
-}, { immediate: true})
+        carouselInstance = new Carousel(carouselElement.value)
+      }
+    })
+  },
+  { immediate: true }
+)
 
 const previous = () => {
   carouselInstance?.prev()
