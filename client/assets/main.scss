@@ -17,19 +17,19 @@ $enable-shadows: true;
   --brand-primary-dark: #004400;
 }
 
-
 .bg-body-tertiary {
   background: #f5f5f5;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   color: var(--brand-primary-dark);
 }
 
 hr {
   color: var(--brand-primary);
 }
-
 
 h1 {
   font-size: 1.4em;
@@ -53,7 +53,7 @@ h5 {
 
 .card-img-left {
   border-top-left-radius: var(--bs-card-inner-border-radius);
-  border-bottom-left-radius: var(--bs-card-inner-border-radius)
+  border-bottom-left-radius: var(--bs-card-inner-border-radius);
 }
 
 .bg-primary-subtler {
