@@ -41,6 +41,7 @@ const router = useRouter()
 
 .animal-image {
   width: 8em;
+  max-height: 5.5em;
 }
 
 .card-button:hover {
