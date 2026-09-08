@@ -93,6 +93,7 @@ class Initializer
             $jpgFiles = glob($folder . DIRECTORY_SEPARATOR . '*.jpg') ?: [];
             $jpegFiles = glob($folder . DIRECTORY_SEPARATOR . '*.jpeg') ?: [];
             $imageFiles = array_merge($jpgFiles, $jpegFiles);
+            sort($imageFiles);
 
             foreach ($imageFiles as $imagePath) {
                 // Remove file extension to get image name
