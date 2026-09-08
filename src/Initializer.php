@@ -132,7 +132,7 @@ class Initializer
 
                 // Add image to animal's images array
                 $animal['images'][] = [
-                    'path' => "/" . self::SPECIES_DIR . '/images/' . $animalId . '/' . $filename,
+                    'src' => "/" . self::SPECIES_DIR . '/images/' . $animalId . '/' . $filename,
                     'caption' => $fullCaption
                 ];
             }
@@ -188,7 +188,7 @@ class Initializer
             copy($mapPath, $targetDir . "/" . $filename);
 
             // Add image to animal's images array
-            $animal['mapPath'] = "/" . self::SPECIES_DIR . '/maps/' . $filename;
+            $animal['mapSrc'] = "/" . self::SPECIES_DIR . '/maps/' . $filename;
         }
 
         return true;
