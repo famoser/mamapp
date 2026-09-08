@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { Offcanvas } from 'bootstrap'
 import MenuEntry from '@/components/MenuEntry.vue'
 import MenuHeader from '@/components/MenuHeader.vue'
+import { useRouter } from 'vue-router'
 
 const offcanvasElement = ref<HTMLElement | null>(null)
 let offcanvasInstance: Offcanvas | null = null
@@ -16,13 +17,15 @@ onMounted(() => {
 const toggleMenu = () => {
   offcanvasInstance?.toggle()
 }
+
+const router = useRouter()
 </script>
 
 <template>
   <nav class="navbar sticky-top border-bottom bg-primary-subtler mb-3">
     <div class="d-flex gap-2 justify-content-between w-100">
-      <button class="btn btn-icon py-1" @click="toggleMenu" aria-label="Toggle menu">
-        <i class="icon icon-bars" />
+      <button class="btn btn-icon py-1" @click="router.push('/')" aria-label="Toggle menu">
+        <i class="icon icon-arrow-left" />
       </button>
       <slot />
     </div>
