@@ -58,7 +58,7 @@ const router = useRouter()
     </p>
 
     <div class="d-flex flex-column gap-5">
-      <img :src="animal.mapSrc" class="img-fluid border-1 border" :alt="'Map of ' + animal.name" />
+      <img :src="animal.mapSrc" class="img-fluid border-1 border rounded-1" :alt="'Map of ' + animal.name" />
 
       <animal-text icon="icon-books" label="Beschreibung" :text="animal.description" />
       <animal-text icon="icon-almost-equal-to" label="Ähnliche Spezies" :text="animal.similarSpecies" />
