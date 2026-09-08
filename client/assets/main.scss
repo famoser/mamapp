@@ -11,6 +11,7 @@ $enable-shadows: true;
 @use 'icons';
 
 :root {
+  --brand-primary-light: #eaf4ea;
   --brand-primary: #88cc88;
   --brand-primary-dark: #004400;
 }
@@ -19,9 +20,24 @@ $enable-shadows: true;
   background: #f5f5f5;
 }
 
-h4 {
-  font-size: 1.5em;
-  font-style: normal;
+h1, h2, h3 {
+  color: var(--brand-primary-dark);
+}
+
+
+h1 {
+  font-size: 1.4em;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 1.4em;
+}
+
+h3 {
+  font-weight: 500;
+  font-size: 0.8em;
+  text-transform: uppercase;
 }
 
 h5 {

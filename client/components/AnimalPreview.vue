@@ -27,7 +27,7 @@ const router = useRouter()
         </p>
       </div>
       <button class="btn btn-icon ms-2">
-        <i class="icon" :class="{ 'icon-thumbtack-full': isFavorite, 'icon-thumbtack-empty': !isFavorite }" @click.stop="emit('toggle-favorite')"></i>
+        <i class="icon" :class="{ 'icon-thumbtack-solid': isFavorite, 'icon-thumbtack': !isFavorite }" @click.stop="emit('toggle-favorite')"></i>
       </button>
     </div>
   </div>
