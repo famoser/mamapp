@@ -57,6 +57,8 @@ const router = useRouter()
       <i>{{ animal.latinName }}</i>
     </p>
 
+    <img :src="animal.mapSrc" class="img-fluid" :alt="'Map of ' + animal.name">
+
     <p>{{ animal.description }}</p>
 
     <p>{{ animal.similarSpecies }}</p>
