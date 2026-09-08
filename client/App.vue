@@ -13,9 +13,7 @@ onMounted(async () => {
 
 <template>
   <div class="container mw-mobile">
-    <div class="my-5">
-      <router-view v-if="!loading"></router-view>
-    </div>
+    <router-view v-if="!loading"></router-view>
   </div>
 </template>
 

@@ -15,13 +15,13 @@ const router = useRouter()
 </script>
 
 <template>
-  <div class="card" @click="router.push('/species/' + animal.id)">
+  <div class="card card-horizontal" @click="router.push('/species/' + animal.id)">
+    <img :src="`${animal.images[0]?.path}`" :alt="animal.name" class="card-img-left animal-image me-3" />
     <div class="card-body d-flex align-items-start">
-      <img :src="`${animal.images[0]?.path}`" :alt="animal.name" class="animal-image me-3" />
       <div class="flex-grow-1">
-        <h5 class="mb-1">
+        <h2 class="mb-1">
           <b>{{ animal.name }}</b>
-        </h5>
+        </h2>
         <p class="mb-0 text-muted">
           <i>{{ animal.latinName }}</i>
         </p>
@@ -34,10 +34,12 @@ const router = useRouter()
 </template>
 
 <style scoped>
+.card-horizontal {
+  display: flex;
+  flex-direction: row;
+}
+
 .animal-image {
-  width: 8em;
-  height: 4em;
-  flex-shrink: 0;
-  object-fit: cover;
+  width: 9em;
 }
 </style>

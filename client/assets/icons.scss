@@ -10,7 +10,12 @@
   background-color: var(--brand-primary-dark);
 }
 
-.btn > .icon, .icon-lg {
+.icon-sm {
+  width: 1em;
+  height: 1em;
+}
+
+.icon-lg {
   width: 2em;
   height: 2em;
 }
@@ -18,6 +23,15 @@
 .icon-xl {
   width: 3em;
   height: 3em;
+}
+
+.btn-icon {
+  line-height: 1;
+}
+
+.btn-icon:hover,
+.btn-icon:active {
+  background-color: var(--brand-primary-light);
 }
 
 .icon-brand {

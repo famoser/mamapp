@@ -21,12 +21,16 @@ const toggleMenu = () => {
 </script>
 
 <template>
-  <div class="d-flex">
-    <button class="btn btn-link m-3" @click="toggleMenu" aria-label="Toggle menu">
-      <i class="icon icon-bars" />
-    </button>
-    <slot />
-  </div>
+  <nav class="navbar sticky-top border-bottom bg-white mb-3">
+    <div class="d-flex gap-2">
+      <button class="btn btn-icon py-1" @click="toggleMenu" aria-label="Toggle menu">
+        <i class="icon icon-bars" />
+      </button>
+      <slot />
+    </div>
+  </nav>
+
+  <div class="d-flex"></div>
 
   <!-- Offcanvas Sidebar Menu -->
   <div ref="offcanvasElement" class="offcanvas offcanvas-start" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarLabel">
@@ -71,4 +75,5 @@ const toggleMenu = () => {
 .byline {
   font-size: 0.8em;
 }
+
 </style>
