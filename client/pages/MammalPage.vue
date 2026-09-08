@@ -40,6 +40,8 @@ const router = useRouter()
 <template>
   <div v-if="animal">
     <nav-layout>
+      <div v-if="favorites.includes(animal.id) && favorites.length > 1" class="align-self-center text-muted">
+        {{ currentAnimalIndex + 1 }} / {{ favorites.length }} Pinned</div>
       <div v-if="favorites.includes(animal.id) && favorites.length > 1">
         <button class="btn btn-icon py-1" @click="router.push('/species/' + previousAnimalId)" aria-label="Previous animal">
           <i class="icon icon-chevron-left" />
