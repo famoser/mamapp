@@ -1,24 +1,29 @@
 <script setup lang="ts">
 import type { Image } from '@/domain/Animal'
-import { onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
 import { Carousel } from 'bootstrap'
 
-defineProps<{
+const props = defineProps<{
   images: Image[]
 }>()
 
 const carouselElement = ref<HTMLElement | null>(null)
 let carouselInstance: Carousel | null = null
 
-onMounted(() => {
-  if (carouselElement.value) {
-    const firstImage = carouselElement.value.querySelector('.carousel-item')
-    if (firstImage) {
-      ;(firstImage as HTMLElement).classList.add('active')
+onMounted(() => {})
+
+watch(() => props.images, () => {
+  nextTick(() => {
+    if (carouselElement.value) {
+      const firstImage = carouselElement.value.querySelector('.carousel-item')
+      if (firstImage) {
+        ;(firstImage as HTMLElement).classList.add('active')
+      }
+
+      carouselInstance = new Carousel(carouselElement.value)
     }
-    carouselInstance = new Carousel(carouselElement.value)
-  }
-})
+  })
+}, { immediate: true})
 
 const previous = () => {
   carouselInstance?.prev()
@@ -32,8 +37,8 @@ const next = () => {
   <div ref="carouselElement" class="carousel slide">
     <div class="carousel-inner">
       <div class="carousel-item position-relative" v-for="image in images" :key="image.path">
-        <img :src="image.path" class="d-block w-100" :alt="image.caption" />
-        <p class="p-1 bg-black text-white mb-0">
+        <img :src="image.path" class="d-block w-100 rounded-top-2" :alt="image.caption" />
+        <p class="p-1 bg-black text-white mb-0 rounded-bottom-1">
           {{ image.caption }}
         </p>
       </div>

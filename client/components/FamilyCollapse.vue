@@ -49,7 +49,7 @@ const toggleCollapse = () => {
       <p class="mb-1 fw-bold">{{ family }}</p>
       <span class="d-flex align-items-center gap-2 text-muted small">
         <span>{{ animals.length }} species</span>
-        <i class="icon icon-chevron-left" :class="{ 'animate-turn-ccw': !collapseState }"></i>
+        <i class="icon icon-chevron-left" :class="{ 'turn-90-ccw': !collapseState }"></i>
       </span>
     </div>
     <div ref="collapseElement" id="collapse-body" class="collapse show">
