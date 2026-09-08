@@ -48,3 +48,8 @@ h5 {
   font-size: 1em;
   font-weight: bold;
 }
+
+.card-img-left {
+  border-top-left-radius: var(--bs-card-inner-border-radius);
+  border-bottom-left-radius: var(--bs-card-inner-border-radius)
+}

@@ -31,13 +31,15 @@ const animalsByFamily = computed(() => {
 
 <template>
   <menu-layout>
-    <div class="input-group">
+    <div class="input-group flex-grow-1 w-100">
       <span class="input-group-text">
-        <i class="icon icon-magnifying-glass" />
+        <i class="icon icon-magnifying-glass icon-sm" />
       </span>
-      <input type="text" class="form-control" placeholder="Tier" v-model="search" />
+      <input type="text" class="form-control" placeholder="Spezies suchen..." v-model="search" />
     </div>
   </menu-layout>
   <h3 class="mb-3">{{ t('pages.home.title') }}</h3>
-  <family-collapse v-for="[family, animals] in animalsByFamily.entries()" :key="family" :family="family" :animals="animals" :favorites="favorites" @toggle-favorite="toggleFavorite($event.id)" />
+  <div class="d-flex flex-column gap-2">
+    <family-collapse v-for="[family, animals] in animalsByFamily.entries()" :key="family" :family="family" :animals="animals" :favorites="favorites" @toggle-favorite="toggleFavorite($event.id)" />
+  </div>
 </template>

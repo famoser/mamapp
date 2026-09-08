@@ -25,7 +25,9 @@ const isCollapsed = ref(false)
       </div>
     </div>
     <div v-show="!isCollapsed" class="card-body">
-      <animal-preview v-for="animal in animals" :key="animal.id" :animal="animal" :is-favorite="favorites.includes(animal.id)" @toggle-favorite="emit('toggle-favorite', animal)" />
+      <div class="d-flex flex-column gap-1">
+        <animal-preview v-for="animal in animals" :key="animal.id" :animal="animal" :is-favorite="favorites.includes(animal.id)" @toggle-favorite="emit('toggle-favorite', animal)" />
+      </div>
     </div>
   </div>
 </template>
