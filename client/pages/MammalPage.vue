@@ -2,7 +2,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useMammalsState } from '@/services/state'
 import { useDatabase } from '@/services/data'
-import { computed, type ComputedRef } from 'vue'
+import { computed } from 'vue'
 import NavLayout from '@/components/NavLayout.vue'
 import AnimalView from '@/components/AnimalView.vue'
 import ContentSlider from '@/components/ContentSlider.vue'
