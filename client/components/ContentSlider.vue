@@ -9,7 +9,7 @@ const emit = defineEmits<{
 
 const startX = ref<number | null>(null)
 const currentX = ref(0)
-const swipeThreshold = 80
+const containerRef = ref<HTMLElement | null>(null)
 const dragOffset = computed(() => {
   if (startX.value === null) {
     return 0
@@ -20,11 +20,11 @@ const dragOffset = computed(() => {
 
 const activeSide = ref<SwipeDirection>('before')
 watch(dragOffset, () => {
-  if (dragOffset.value < 0) {
+  if (dragOffset.value > 0) {
     activeSide.value = 'before'
   }
 
-  if (dragOffset.value > 0) {
+  if (dragOffset.value < 0) {
     activeSide.value = 'after'
   }
 })
@@ -43,6 +43,7 @@ function moveSwipe(clientX: number): void {
 }
 
 function endSwipe(): void {
+  const swipeThreshold = containerRef.value ? containerRef.value.offsetWidth * 0.3 : 80
   const completedDirection = Math.abs(dragOffset.value) >= swipeThreshold ? activeSide.value : null
   if (completedDirection) {
     emit('swipe-completed', completedDirection)
@@ -78,6 +79,7 @@ function onTouchEnd(): void {
 
 <template>
   <div
+    ref="containerRef"
     class="slidable-view"
     @pointerdown="onPointerDown"
     @pointermove="onPointerMove"
