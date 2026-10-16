@@ -16,7 +16,7 @@ class Initializer
 
     public static function init(StreamInterface $output): void
     {
-        $path = self::SOURCE_DIR . DIRECTORY_SEPARATOR . "Arten.xlsx";
+        $path = self::SOURCE_DIR . DIRECTORY_SEPARATOR . "Arttexte.xlsx";
         if (!self::readAnimalsXlsx($output, $path, $animals)) {
             return;
         }
@@ -67,8 +67,8 @@ class Initializer
      */
     private static function readImagesXlsx(StreamInterface $output, string $filePath, ?array &$data = null): bool
     {
-        $expectedHeader = ['image_name', 'caption', 'role', 'eigen/fremd', 'mdd_id', 'Species_ID_prov', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'image_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
-        $cleanHeader = ['image_name', 'caption', 'role', 'eigen/fremd', 'mdd_id', 'species_id', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'image_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
+        $expectedHeader = ['image_name', 'caption', 'Comments', 'role', 'eigen/fremd', 'mdd_id', 'Species_ID_prov', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'image_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
+        $cleanHeader = ['image_name', 'caption', 'role', 'comments', 'eigen/fremd', 'mdd_id', 'species_id', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'image_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
         return self::xlsxToArray($output, $filePath, $expectedHeader, $cleanHeader, $data);
     }
 
@@ -127,7 +127,9 @@ class Initializer
 
                 // copy to out directory
                 $targetDir = self::TARGET_DIR . "/images/" . $animalId;
-                mkdir($targetDir, recursive: true);
+                if (is_dir($targetDir) === false) {
+                    mkdir($targetDir, recursive: true);
+                }
                 copy($imagePath, $targetDir . "/" . $filename);
 
                 // Add image to animal's images array
@@ -184,7 +186,9 @@ class Initializer
 
             // copy to out directory
             $targetDir = self::TARGET_DIR . "/maps";
-            mkdir($targetDir, recursive: true);
+            if (is_dir($targetDir) === false) {
+                mkdir($targetDir, recursive: true);
+            }
             copy($mapPath, $targetDir . "/" . $filename);
 
             // Add image to animal's images array
