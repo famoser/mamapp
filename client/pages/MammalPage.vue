@@ -36,13 +36,13 @@ const previousAnimalId = computed(() => {
   const nextIndex = currentAnimalIndex.value - 1
   return nextIndex < 0 ? favorites.value[favorites.value.length - 1] : favorites.value[nextIndex]
 })
-const previousAnimal = computed(() => species.find((s) => s.id === nextAnimalId.value) as Animal)
+const previousAnimal = computed(() => species.find((s) => s.id === previousAnimalId.value) as Animal)
 
 const swipeCompleted = function (swipeDirection: 'before' | 'after') {
   if (swipeDirection === 'before') {
-    router.push('/species/' + nextAnimalId.value)
-  } else {
     router.push('/species/' + previousAnimalId.value)
+  } else {
+    router.push('/species/' + nextAnimalId.value)
   }
 }
 
