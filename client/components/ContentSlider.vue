@@ -36,7 +36,7 @@ const containerStyle = computed(() => ({
 }))
 
 function endSwipe(): void {
-  let containerWidth = containerRef.value ?.offsetWidth ?? 300
+  let containerWidth = containerRef.value?.offsetWidth ?? 300
   const swipeThreshold = containerRef.value ? containerWidth * 0.3 : 80
   const completedDirection = Math.abs(dragOffset.value) >= swipeThreshold ? activeSide.value : null
 
