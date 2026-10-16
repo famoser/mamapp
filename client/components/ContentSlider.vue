@@ -29,9 +29,41 @@ watch(dragOffset, () => {
   }
 })
 
+const isAnimating = ref(false)
 const containerStyle = computed(() => ({
-  transform: `translateX(${dragOffset.value}px)`
+  transform: `translateX(${dragOffset.value}px)`,
+  transition: isAnimating.value ? 'transform 0.2s ease-out' : 'none'
 }))
+
+function endSwipe(): void {
+  let containerWidth = containerRef.value ?.offsetWidth ?? 300
+  const swipeThreshold = containerRef.value ? containerWidth * 0.3 : 80
+  const completedDirection = Math.abs(dragOffset.value) >= swipeThreshold ? activeSide.value : null
+
+  if (completedDirection) {
+    // Animate to full width
+    isAnimating.value = true
+    currentX.value = startX.value! + (completedDirection === 'before' ? containerWidth : -containerWidth)
+
+    // Wait for animation to complete before emitting event
+    setTimeout(() => {
+      isAnimating.value = false
+      startX.value = null
+      currentX.value = 0
+      emit('swipe-completed', completedDirection)
+    }, 200)
+  } else {
+    // Animate back to 0
+    isAnimating.value = true
+    currentX.value = startX.value!
+
+    setTimeout(() => {
+      isAnimating.value = false
+      startX.value = null
+      currentX.value = 0
+    }, 200)
+  }
+}
 
 function beginSwipe(clientX: number): void {
   currentX.value = clientX
@@ -40,15 +72,6 @@ function beginSwipe(clientX: number): void {
 
 function moveSwipe(clientX: number): void {
   currentX.value = clientX
-}
-
-function endSwipe(): void {
-  const swipeThreshold = containerRef.value ? containerRef.value.offsetWidth * 0.3 : 80
-  const completedDirection = Math.abs(dragOffset.value) >= swipeThreshold ? activeSide.value : null
-  if (completedDirection) {
-    emit('swipe-completed', completedDirection)
-  }
-  startX.value = null
 }
 
 function onPointerDown(event: PointerEvent): void {
