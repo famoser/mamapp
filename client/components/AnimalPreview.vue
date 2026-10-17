@@ -10,7 +10,6 @@ const emit = defineEmits<{
   (e: 'toggle-favorite'): void
   (e: 'navigate'): void
 }>()
-
 </script>
 
 <template>
