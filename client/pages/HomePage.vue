@@ -6,7 +6,11 @@ import { useMammalsState } from '@/services/state'
 import type { Animal } from '@/domain/Animal'
 import SidebarLayout from '@/components/SidebarLayout.vue'
 import { useTranslator } from '@/locales/translator'
+import ContentCollapse from '@/components/library/ContentCollapse.vue'
+import AnimalPreview from '@/components/AnimalPreview.vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const { favorites, toggleFavorite } = useMammalsState()
 
 const search = ref('')
@@ -44,11 +48,29 @@ const favoriteAnimals = computed(() => {
   </sidebar-layout>
   <div class="mb-5" v-if="favoriteAnimals.length > 0">
     <h3 class="mb-2">{{ t('pages.home.favorites') }}</h3>
-    <family-collapse family="Pinned" :animals="favoriteAnimals" :favorites="favorites" @toggle-favorite="toggleFavorite($event.id)" :header="false" />
+    <content-collapse>
+      <animal-preview
+        v-for="(animal, index) in favoriteAnimals"
+        :key="animal.id"
+        :animal="animal"
+        :is-favorite="true"
+        @toggle-favorite="toggleFavorite(animal.id)"
+        @navigate="router.push('/favorites/' + index)"
+      />
+    </content-collapse>
   </div>
 
   <div class="d-flex flex-column gap-5">
-    <family-collapse v-for="[family, animals] in animalsByFamily.entries()" :key="family" :family="family" :animals="animals" :favorites="favorites" @toggle-favorite="toggleFavorite($event.id)" />
+    <content-collapse v-for="[family, animals] in animalsByFamily.entries()" :key="family" :title="family" :sub-title="t('view.family.species', { count: animals.length })">
+      <animal-preview
+        v-for="animal in animals"
+        :key="animal.id"
+        :animal="animal"
+        :is-favorite="favorites.includes(animal.id)"
+        @toggle-favorite="toggleFavorite(animal.id)"
+        @navigate="router.push('/species/' + animal.id)"
+      />
+    </content-collapse>
   </div>
 </template>
 
