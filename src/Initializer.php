@@ -10,6 +10,7 @@ class Initializer
     public const string SPECIES_DIR = 'species';
     public const string SOURCE_DIR = PathHelper::VAR_PERSISTENT_DIR . DIRECTORY_SEPARATOR . self::SPECIES_DIR;
     public const string IMAGES_SOURCE_DIR = self::SOURCE_DIR . DIRECTORY_SEPARATOR . 'Bilder';
+    public const string CALLS_SOURCE_DIR = self::SOURCE_DIR . DIRECTORY_SEPARATOR . 'Calls';
     public const string MAPS_SOURCE_DIR = self::SOURCE_DIR . DIRECTORY_SEPARATOR . 'Karten';
     public const string CACHE_DIR = PathHelper::VAR_TRANSIENT_DIR . DIRECTORY_SEPARATOR . self::SPECIES_DIR;
     public const string TARGET_DIR = PathHelper::PUBLIC_DIR . DIRECTORY_SEPARATOR . self::SPECIES_DIR;
@@ -28,11 +29,21 @@ class Initializer
             return;
         }
 
+        $path = self::CALLS_SOURCE_DIR . DIRECTORY_SEPARATOR . "App_Sounddatenbank.xlsx";
+        if (!self::readCallsXlsx($output, $path, $calls)) {
+            return;
+        }
+
         exec("rm -rf " . self::TARGET_DIR);
         if (!self::addImages($output, $images, $animals)) {
             return;
         }
         $output->write("Added images.\n");
+
+        if (!self::addCalls($output, $calls, $animals)) {
+            return;
+        }
+        $output->write("Added calls.\n");
 
         if (!self::addMapImages($output, $animals)) {
             return;
@@ -69,6 +80,19 @@ class Initializer
     {
         $expectedHeader = ['image_name', 'caption', 'Comments', 'role', 'eigen/fremd', 'mdd_id', 'Species_ID_prov', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'image_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
         $cleanHeader = ['image_name', 'caption', 'role', 'comments', 'eigen/fremd', 'mdd_id', 'species_id', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'image_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
+        return self::xlsxToArray($output, $filePath, $expectedHeader, $cleanHeader, $data);
+    }
+
+    /**
+     * @param mixed[] $data
+     * @param-out mixed[] $data
+     *
+     * @phpstan-assert-if-true mixed[] $data
+     */
+    private static function readCallsXlsx(StreamInterface $output, string $filePath, ?array &$data = null): bool
+    {
+        $expectedHeader = ['sound_name', 'caption', 'role', 'eigen/fremd', 'mdd_id', 'Species_ID_prov', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'sound_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
+        $cleanHeader = ['sound_name', 'caption', 'role', 'eigen/fremd', 'mdd_id', 'species_id', 'scientific_name', 'common_name_de', 'common_name_en', 'image_date', 'country', 'source', 'observation_url', 'sound_url', 'creator', 'creator_username', 'copyright_holder', 'attribution_text', 'license', 'license_url', 'licence_screenshot_id', 'commercial_use', 'attribution_required', 'modification_allowed', 'modified', 'modification_description', 'download_date', 'creator_asked', 'creator_answer', 'file_path', 'file_format', 'notes'];
         return self::xlsxToArray($output, $filePath, $expectedHeader, $cleanHeader, $data);
     }
 
@@ -156,6 +180,98 @@ class Initializer
             $animalImage = array_find($animal['images'], fn($animalImage) => str_starts_with($animalImage['path'], $image['file_path']));
             if (!$animalImage) {
                 $output->write("Warning: Image database references image " . $image['file_path'] . " which cannot be found.\n");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param mixed[] $callsDatabase
+     * @param mixed[] $animals
+     */
+    private static function addCalls(StreamInterface $output, array $callsDatabase, array &$animals): bool
+    {
+        foreach ($animals as &$animal) {
+            $animal['calls'] = [];
+        }
+
+        foreach ($animals as &$animal) {
+            // Find folder in SOURCE_DIR/Calls with $animal["id"] as prefix
+            $animalId = $animal["id"];
+            $pattern = self::CALLS_SOURCE_DIR . DIRECTORY_SEPARATOR . $animalId . '_*';
+            $folders = glob($pattern, GLOB_ONLYDIR);
+
+            if (!$folders || count($folders) !== 1) {
+                if ($folders && count($folders) > 1) {
+                    $output->write("Warning: Call folder not unique for animal with id: " . $animalId . "\n");
+                }
+                continue;
+            }
+
+            $folder = $folders[0];
+
+            $callFiles = glob($folder . DIRECTORY_SEPARATOR . '*.m4a') ?: [];
+            sort($callFiles);
+
+            foreach ($callFiles as $callFilePath) {
+                // Remove file extension to get call name
+                $filename = basename($callFilePath);
+                $callNameWithoutExt = pathinfo($filename, PATHINFO_FILENAME);
+
+                // Find entry in $callsDatabase
+                $callEntry = null;
+                foreach ($callsDatabase as $dbCall) {
+                    if (isset($dbCall['sound_name']) && $dbCall['sound_name'] === $callNameWithoutExt) {
+                        $callEntry = $dbCall;
+                        break;
+                    }
+                }
+
+                // Skip if no entry found
+                if ($callEntry === null) {
+                    continue;
+                }
+
+                // Compose the fullCaption
+                $fullCaption = trim($callEntry['caption']) . " " . trim($callEntry['attribution_text']);
+                if (!empty($callEntry['license'])) {
+                    $fullCaption .= " " . $callEntry['license'];
+                }
+
+                // copy to out directory
+                $targetDir = self::TARGET_DIR . "/calls/" . $animalId;
+                if (is_dir($targetDir) === false) {
+                    mkdir($targetDir, recursive: true);
+                }
+                copy($callFilePath, $targetDir . "/" . $filename);
+
+                // Add call to animal's call array
+                $animal['calls'][] = [
+                    'src' => "/" . self::SPECIES_DIR . '/calls/' . $animalId . '/' . $filename,
+                    'caption' => $fullCaption
+                ];
+            }
+        }
+
+
+        // Second loop: verify all calls in database have corresponding animals and call files
+        unset($animal);
+        foreach ($callsDatabase as $count => $call) {
+            if ($call['role'] !== 'main') {
+                continue;
+            }
+
+            $animal = array_find($animals, fn($animal) => $animal['id'] === $call['species_id']);
+            if (!$animal) {
+                $output->write("Error: Call database entry " . $count . " references species " . $call['species_id'] . " which cannot be found.\n");
+                return false;
+            }
+
+            $animalCall = array_find($animal['calls'], fn($animalCall) => str_contains($animalCall['src'], $call['sound_name']));
+            if (!$animalCall) {
+                $output->write("Warning: Call database references call " . $call['file_path'] . " which cannot be found.\n");
                 return false;
             }
         }
