@@ -29,13 +29,23 @@ watch(dragOffset, () => {
   }
 })
 
+function onPointerDown(event: PointerEvent): void {
+  event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId)
+  currentX.value = event.clientX
+  startX.value = event.clientX
+}
+
+function onPointerMove(event: PointerEvent): void {
+  currentX.value = event.clientX
+}
+
 const isAnimating = ref(false)
 const containerStyle = computed(() => ({
   transform: `translateX(${dragOffset.value}px)`,
   transition: isAnimating.value ? 'transform 0.2s ease-out' : 'none'
 }))
 
-function endSwipe(): void {
+function onPointerUp(): void {
   let containerWidth = containerRef.value?.offsetWidth ?? 300
   const swipeThreshold = containerRef.value ? containerWidth * 0.3 : 80
   const completedDirection = Math.abs(dragOffset.value) >= swipeThreshold ? activeSide.value : null
@@ -64,55 +74,10 @@ function endSwipe(): void {
     }, 200)
   }
 }
-
-function beginSwipe(clientX: number): void {
-  currentX.value = clientX
-  startX.value = clientX
-}
-
-function moveSwipe(clientX: number): void {
-  currentX.value = clientX
-}
-
-function onPointerDown(event: PointerEvent): void {
-  event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId)
-  beginSwipe(event.clientX)
-}
-
-function onPointerMove(event: PointerEvent): void {
-  moveSwipe(event.clientX)
-}
-
-function onPointerUp(): void {
-  endSwipe()
-}
-
-function onTouchStart(event: TouchEvent): void {
-  beginSwipe(event.touches[0].clientX)
-}
-
-function onTouchMove(event: TouchEvent): void {
-  moveSwipe(event.touches[0].clientX)
-}
-
-function onTouchEnd(): void {
-  endSwipe()
-}
 </script>
 
 <template>
-  <div
-    ref="containerRef"
-    class="slidable-view"
-    @pointerdown="onPointerDown"
-    @pointermove="onPointerMove"
-    @pointerup="onPointerUp"
-    @pointercancel="onPointerUp"
-    @touchstart.passive="onTouchStart"
-    @touchmove.passive="onTouchMove"
-    @touchend="onTouchEnd"
-    @touchcancel="onTouchEnd"
-  >
+  <div ref="containerRef" class="slidable-view" @pointerdown="onPointerDown" @pointermove="onPointerMove" @pointerup="onPointerUp" @pointercancel="onPointerUp">
     <div v-if="activeSide === 'before'" class="slidable-view__side slidable-view__side--before">
       <slot name="before" />
     </div>
