@@ -20,7 +20,7 @@ defineProps<{
 
     <animal-text icon="icon-books" label="Beschreibung" :text="animal.description" />
     <animal-text icon="icon-almost-equal-to" label="Ähnliche Spezies" :text="animal.similarSpecies" />
-    <animal-text icon="icon-globe" label="Lebensraum" :text="animal.habitat" />
+    <animal-text icon="icon-tree" label="Lebensraum" :text="animal.habitat" />
     <animal-text icon="icon-binoculars" label="Wie beobachten" :text="animal.observe" />
     <animal-text icon="icon-leaf" label="Schutzstatus" :text="animal.conservation" />
   </div>
