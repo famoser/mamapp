@@ -7,6 +7,7 @@ import { useTranslator } from '@/locales/translator'
 import ContentCollapse from '@/components/library/ContentCollapse.vue'
 import AnimalPreview from '@/components/AnimalPreview.vue'
 import { useRouter } from 'vue-router'
+import type { Animal } from '@/domain/Animal'
 
 const router = useRouter()
 const { favorites, toggleFavorite } = useMammalsState()
@@ -17,7 +18,7 @@ const { t } = useTranslator()
 const { animals, animalsByFamily } = useDatabase(search)
 
 const favoriteAnimals = computed(() => {
-  return favorites.value.map((s) => animals.value.find(a => a.id === s))
+  return favorites.value.map((s) => animals.value.find(a => a.id === s) as Animal)
 })
 </script>
 
