@@ -2,6 +2,7 @@
 import type { Animal } from '@/domain/Animal'
 import AnimalText from '@/components/AnimalText.vue'
 import ImageCarousel from '@/components/library/ImageCarousel.vue'
+import AudioPlay from '@/components/library/AudioPlay.vue'
 
 defineProps<{
   animal: Animal
@@ -10,6 +11,7 @@ defineProps<{
 
 <template>
   <image-carousel :images="animal.images" />
+  <audio-play v-if="animal.calls.length > 0" :calls="animal.calls" />
   <h1 class="text-primary-emphasis mt-5 mb-1">{{ animal.name }}</h1>
   <p class="text-muted">
     <i>{{ animal.latinName }}</i>
