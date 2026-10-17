@@ -9,7 +9,25 @@
       "title": "Wahlquittung hochladen"
     }
   },
-  "layout": {},
+  "layout": {
+    "sidebar": {
+      "title": "Mammal Guide Europe",
+      "subtitle": "Explore · Learn · Protect",
+      "explore": "Explore",
+      "speciesList": "Artenliste",
+      "identify": "Bestimmen",
+      "learn": "Learn",
+      "observationMethods": "Beobachten",
+      "ethics": "Ethik",
+      "about": "Über",
+      "contactUs": "Kontakt",
+      "acknowledgements": "Danksagungen",
+      "sources": "Quellen",
+      "preferences": "Einstellungen",
+      "settings": "Einstellungen",
+      "language": "Sprache"
+    }
+  },
   "shared": {
     "reset_button": {
       "reset": "Zurücksetzen"
