@@ -9,10 +9,16 @@ export type Animal = {
   observe: string
   conservation: string
   images: Image[]
+  calls: Call[]
   mapSrc: string
 }
 
 export type Image = {
+  src: string
+  caption: string
+}
+
+export type Call = {
   src: string
   caption: string
 }
