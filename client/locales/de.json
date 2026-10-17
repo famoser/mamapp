@@ -7,6 +7,19 @@
     },
     "mammal": {
       "title": "Wahlquittung hochladen"
+    },
+    "text": {
+      "observe": {
+        "title": "Beobachten",
+        "content": "Säugetiere zu beobachten, braucht vor allem Geduld, Aufmerksamkeit und einen Blick für die kleinen Zeichen. Viele Arten sind scheu, nachtaktiv oder so gut an ihre Umgebung angepasst, dass wir sie selten direkt zu Gesicht bekommen. Achte deshalb auch auf Spuren wie Trittsiegel, Haare, Frassspuren, Kot oder Höhlen und Baue. Beobachte aus angemessener Entfernung und nutze, wenn möglich, ein Fernglas oder eine Kamera mit Zoom. Auch Geräusche, Bewegungsmuster und der Lebensraum können wichtige Hinweise zur Bestimmung liefern. Je genauer du hinschaust, desto mehr entdeckst du – auch ohne einem Tier nahekommen zu müssen.",
+        "content2": "Nimm dir Zeit, bleib ruhig und bewege dich möglichst unauffällig. Verzichte darauf, Tiere aufzuspüren, zu verfolgen oder aus ihren Verstecken zu locken. Halte deine Beobachtungen mit Datum, Ort, Lebensraum und auffälligen Merkmalen fest. So lernst du, Arten besser zu unterscheiden, und trägst gleichzeitig dazu bei, die Vielfalt der Säugetiere zu dokumentieren. Die beste Beobachtung ist oft die, bei der das Tier gar nicht bemerkt, dass du da bist."
+      },
+      "ethics": {
+        "title": "Ethik",
+        "content": "Jede Begegnung mit einem Wildtier ist ein Privileg und bringt Verantwortung mit sich. Säugetiere brauchen Rückzugsorte, um zu schlafen, Nahrung zu suchen, ihre Jungen aufzuziehen und Energie zu sparen. Halte deshalb Abstand, bleibe auf Wegen und vermeide es, Tiere zu bedrängen oder ihre Verstecke aufzusuchen. Berühre oder füttere Wildtiere nicht – auch dann nicht, wenn sie zutraulich wirken. Besonders während der Fortpflanzungs- und Aufzuchtzeit können Störungen schwerwiegende Folgen haben. Was für uns nur ein kurzer Blick ist, kann für ein Tier wertvolle Ruhe kosten.",
+        "content2": "Auch beim Fotografieren, Bestimmen und Teilen von Beobachtungen gilt: Das Wohl des Tieres steht an erster Stelle. Verwende keine Lockrufe oder Köder, verzichte auf Blitzlicht und veröffentliche sensible Fundorte, etwa von seltenen Arten oder ihren Ruheplätzen, nicht zu genau. Respektiere die Natur auch dann, wenn du keine Tiere siehst: Ein stiller Wald ist nicht leer, sondern voller Leben. Unser Ziel ist nicht, der Natur möglichst nahe zu kommen, sondern sie besser zu verstehen – und ihr den Raum zu lassen, den sie braucht."
+      },
+      "footer": "Das Mamapp Team"
     }
   },
   "layout": {

@@ -4,6 +4,7 @@ import { Offcanvas } from 'bootstrap'
 import MenuEntry from '@/components/library/MenuEntry.vue'
 import MenuHeader from '@/components/library/MenuHeader.vue'
 import { useTranslator } from '@/locales/translator'
+import { useRoute, useRouter } from 'vue-router'
 
 const { t } = useTranslator()
 
@@ -15,6 +16,16 @@ onMounted(() => {
     offcanvasInstance = new Offcanvas(offcanvasElement.value)
   }
 })
+
+const router = useRouter()
+const route = useRoute()
+
+const navigateTo = (path: string) => {
+  if (route.fullPath !== path) {
+    router.push(path)
+  }
+  toggleMenu()
+}
 
 const toggleMenu = () => {
   offcanvasInstance?.toggle()
@@ -49,13 +60,13 @@ const toggleMenu = () => {
     <div class="offcanvas-body">
       <div class="mb-5 mt-2">
         <menu-header :label="t('layout.sidebar.explore')" />
-        <menu-entry :label="t('layout.sidebar.speciesList')" icon="icon-list" :active="true" @click="toggleMenu" />
+        <menu-entry :label="t('layout.sidebar.speciesList')" icon="icon-list" :active="route.fullPath === '/'" @click="navigateTo('/')" />
         <menu-entry :label="t('layout.sidebar.identify')" icon="icon-magnifying-glass" />
       </div>
       <div class="mb-5">
         <menu-header :label="t('layout.sidebar.learn')" />
-        <menu-entry :label="t('layout.sidebar.observationMethods')" icon="icon-binoculars" />
-        <menu-entry :label="t('layout.sidebar.ethics')" icon="icon-leaf" />
+        <menu-entry :label="t('layout.sidebar.observationMethods')" icon="icon-binoculars" :active="route.fullPath === '/observe'" @click="navigateTo('/observe')" />
+        <menu-entry :label="t('layout.sidebar.ethics')" icon="icon-leaf" :active="route.fullPath === '/ethics'" @click="navigateTo('/ethics')" />
       </div>
       <div class="mb-5">
         <menu-header :label="t('layout.sidebar.about')" />
