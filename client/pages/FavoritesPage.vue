@@ -12,14 +12,14 @@ import type { Animal } from '@/domain/Animal'
 const route = useRoute()
 const favoriteIndex = computed(() => Number(route.params.index))
 
+const { animals } = useDatabase()
 const { favorites } = useMammalsState()
 
 const findAnimalByFavoriteIndex = function (favoriteIndex: number) {
   const favorite = favorites.value[favoriteIndex]
-  return species.find((s) => s.id === favorite) as Animal
+  return animals.value.find((s) => s.id === favorite) as Animal
 }
 
-const { species } = useDatabase()
 const animal = computed(() => {
   return findAnimalByFavoriteIndex(favoriteIndex.value)
 })
