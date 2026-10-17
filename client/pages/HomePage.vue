@@ -18,7 +18,7 @@ const { t } = useTranslator()
 const { animals, animalsByFamily } = useDatabase(search)
 
 const favoriteAnimals = computed(() => {
-  return favorites.value.map((s) => animals.value.find(a => a.id === s) as Animal)
+  return favorites.value.map((s) => animals.value.find((a) => a.id === s) as Animal)
 })
 </script>
 
