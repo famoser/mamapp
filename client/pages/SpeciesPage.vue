@@ -45,7 +45,7 @@ const router = useRouter()
 </script>
 
 <template>
-  <div v-if="animal">
+  <div>
     <nav-layout>
       <div class="align-self-center text-muted">{{ animalFamilyIndex + 1 }} / {{ animalsByFamily.get(animal.family)?.length ?? 1 }} {{ animal.family }}</div>
       <div>

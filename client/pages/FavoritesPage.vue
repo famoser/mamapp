@@ -50,7 +50,7 @@ const router = useRouter()
 </script>
 
 <template>
-  <div v-if="animal">
+  <div>
     <nav-layout>
       <div class="align-self-center text-muted">{{ favoriteIndex + 1 }} / {{ favorites.length }} {{ t('pages.home.favorites') }}</div>
       <div v-if="favorites.includes(animal.id) && favorites.length > 1">

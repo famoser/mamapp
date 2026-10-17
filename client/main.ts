@@ -7,6 +7,7 @@ import SpeciesPage from '@/pages/SpeciesPage.vue'
 import { createTranslator, setGlobalTranslator } from '@/locales/translator'
 import de from './locales/de.json'
 import FavoritesPage from '@/pages/FavoritesPage.vue'
+import TextPage from '@/pages/TextPage.vue'
 
 const app = createApp(App)
 
@@ -16,7 +17,8 @@ setGlobalTranslator(translator)
 const routes = [
   { path: '/', component: HomePage },
   { path: '/favorites/:index', component: FavoritesPage },
-  { path: '/species/:id', component: SpeciesPage }
+  { path: '/species/:id', component: SpeciesPage },
+  { path: '/:key', component: TextPage }
 ]
 const router = createRouter({ history: createWebHistory(), routes })
 app.use(router)
