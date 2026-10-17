@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { useDatabase } from '@/services/data'
-import FamilyCollapse from '@/components/FamilyCollapse.vue'
 import { computed, ref } from 'vue'
 import { useMammalsState } from '@/services/state'
-import type { Animal } from '@/domain/Animal'
 import SidebarLayout from '@/components/SidebarLayout.vue'
 import { useTranslator } from '@/locales/translator'
 import ContentCollapse from '@/components/library/ContentCollapse.vue'
@@ -16,24 +14,10 @@ const { favorites, toggleFavorite } = useMammalsState()
 const search = ref('')
 
 const { t } = useTranslator()
-const { species } = useDatabase()
-const animalsByFamily = computed(() => {
-  const map = new Map<string, Animal[]>()
-  const searchKey = search.value.toLocaleLowerCase()
-  const filteredSpecies = search.value
-    ? species.filter((s) => s.name.toLocaleLowerCase().includes(searchKey) || s.family.toLocaleLowerCase().includes(searchKey) || s.latinName.toLocaleLowerCase().includes(searchKey))
-    : species
-  filteredSpecies.map((s) => {
-    const list = map.get(s.family) ?? []
-    list.push(s)
-    map.set(s.family, list)
-  })
-
-  return map
-})
+const { animals, animalsByFamily } = useDatabase(search)
 
 const favoriteAnimals = computed(() => {
-  return species.filter((s) => favorites.value.includes(s.id))
+  return animals.value.filter((s) => favorites.value.includes(s.id))
 })
 </script>
 
