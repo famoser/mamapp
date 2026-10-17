@@ -63,12 +63,14 @@ function onAudioEnded(index: number): void {
   word-break: break-word;
 }
 
+.btn {
+  line-height: 1em;
+}
+
 .icon {
-  font-size: 0.6em;
   background-color: black;
 }
 .btn-secondary .icon {
-  font-size: 0.6em;
   background-color: white;
 }
 </style>
