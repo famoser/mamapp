@@ -30,12 +30,12 @@ watch(dragOffset, () => {
 })
 
 function onPointerDown(event: PointerEvent): void {
-  event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId)
   currentX.value = event.clientX
   startX.value = event.clientX
 }
 
 function onPointerMove(event: PointerEvent): void {
+  event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId)
   currentX.value = event.clientX
 }
 
@@ -45,7 +45,9 @@ const containerStyle = computed(() => ({
   transition: isAnimating.value ? 'transform 0.2s ease-out' : 'none'
 }))
 
-function onPointerUp(): void {
+function onPointerUp(event: PointerEvent): void {
+  event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId)
+
   let containerWidth = containerRef.value?.offsetWidth ?? 300
   const swipeThreshold = containerRef.value ? containerWidth * 0.3 : 80
   const completedDirection = Math.abs(dragOffset.value) >= swipeThreshold ? activeSide.value : null
