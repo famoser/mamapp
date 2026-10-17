@@ -3,6 +3,9 @@ import { ref, onMounted } from 'vue'
 import { Offcanvas } from 'bootstrap'
 import MenuEntry from '@/components/library/MenuEntry.vue'
 import MenuHeader from '@/components/library/MenuHeader.vue'
+import { useTranslator } from '@/locales/translator'
+
+const { t } = useTranslator()
 
 const offcanvasElement = ref<HTMLElement | null>(null)
 let offcanvasInstance: Offcanvas | null = null
@@ -36,8 +39,8 @@ const toggleMenu = () => {
       <div class="d-flex gap-3">
         <i class="icon icon-brand icon-xl align-self-center" />
         <div>
-          <h2 class="mb-0">Mammal Guide Europe</h2>
-          <p class="byline text-muted mb-0">Explore · Learn · Protect</p>
+          <h2 class="mb-0">{{ t('layout.sidebar.title') }}</h2>
+          <p class="byline text-muted mb-0">{{ t('layout.sidebar.subtitle') }}</p>
         </div>
       </div>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -45,25 +48,25 @@ const toggleMenu = () => {
 
     <div class="offcanvas-body">
       <div class="mb-5 mt-2">
-        <menu-header label="Explore" />
-        <menu-entry label="Species list" icon="icon-list" :active="true" @click="toggleMenu" />
-        <menu-entry label="Identify" icon="icon-magnifying-glass" />
+        <menu-header :label="t('layout.sidebar.explore')" />
+        <menu-entry :label="t('layout.sidebar.speciesList')" icon="icon-list" :active="true" @click="toggleMenu" />
+        <menu-entry :label="t('layout.sidebar.identify')" icon="icon-magnifying-glass" />
       </div>
       <div class="mb-5">
-        <menu-header label="Learn" />
-        <menu-entry label="Observation methods" icon="icon-binoculars" />
-        <menu-entry label="Ethics" icon="icon-leaf" />
+        <menu-header :label="t('layout.sidebar.learn')" />
+        <menu-entry :label="t('layout.sidebar.observationMethods')" icon="icon-binoculars" />
+        <menu-entry :label="t('layout.sidebar.ethics')" icon="icon-leaf" />
       </div>
       <div class="mb-5">
-        <menu-header label="About" />
-        <menu-entry label="Contact us" icon="icon-envelope" />
-        <menu-entry label="Acknowledgements" icon="icon-award" />
-        <menu-entry label="Sources" icon="icon-books" />
+        <menu-header :label="t('layout.sidebar.about')" />
+        <menu-entry :label="t('layout.sidebar.contactUs')" icon="icon-envelope" />
+        <menu-entry :label="t('layout.sidebar.acknowledgements')" icon="icon-award" />
+        <menu-entry :label="t('layout.sidebar.sources')" icon="icon-books" />
       </div>
       <div>
-        <menu-header label="Preferences" />
-        <menu-entry label="Settings" icon="icon-gear" />
-        <menu-entry label="Language" icon="icon-globe" />
+        <menu-header :label="t('layout.sidebar.preferences')" />
+        <menu-entry :label="t('layout.sidebar.settings')" icon="icon-gear" />
+        <menu-entry :label="t('layout.sidebar.language')" icon="icon-globe" />
       </div>
     </div>
   </div>
