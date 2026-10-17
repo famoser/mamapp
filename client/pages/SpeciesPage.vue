@@ -6,7 +6,6 @@ import NavLayout from '@/components/library/NavLayout.vue'
 import AnimalView from '@/components/AnimalView.vue'
 import ContentSlider from '@/components/library/ContentSlider.vue'
 import type { Animal } from '@/domain/Animal'
-import { useTranslator } from '@/locales/translator'
 
 const route = useRoute()
 const speciesId = computed(() => route.params.id)
@@ -41,7 +40,6 @@ const swipeCompleted = function (swipeDirection: 'before' | 'after') {
     router.push('/species/' + nextAnimal.value.id)
   }
 }
-const { t } = useTranslator()
 
 const router = useRouter()
 </script>
