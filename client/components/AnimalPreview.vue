@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Animal } from '@/domain/Animal'
-import { useRouter } from 'vue-router'
 
 defineProps<{
   animal: Animal
