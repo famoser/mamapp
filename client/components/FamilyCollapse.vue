@@ -4,6 +4,7 @@ import type { Animal } from '@/domain/Animal'
 import { onMounted, ref } from 'vue'
 import { Collapse } from 'bootstrap'
 import { useTranslator } from '@/locales/translator'
+import { useRouter } from 'vue-router'
 
 withDefaults(
   defineProps<{
@@ -36,6 +37,7 @@ const toggleCollapse = () => {
   collapseInstance?.toggle()
 }
 const { t } = useTranslator()
+const router = useRouter()
 </script>
 
 <template>
@@ -56,7 +58,14 @@ const { t } = useTranslator()
     </div>
     <div ref="collapseElement" id="collapse-body" class="collapse show">
       <div class="d-flex flex-column gap-1 bg-primary-subtler p-1">
-        <animal-preview v-for="animal in animals" :key="animal.id" :animal="animal" :is-favorite="favorites.includes(animal.id)" @toggle-favorite="emit('toggle-favorite', animal)" />
+        <animal-preview
+          v-for="animal in animals"
+          :key="animal.id"
+          :animal="animal"
+          :is-favorite="favorites.includes(animal.id)"
+          @toggle-favorite="emit('toggle-favorite', animal)"
+          @navigate="router.push('/species/' + animal.id)"
+        />
       </div>
     </div>
   </div>

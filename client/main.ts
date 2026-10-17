@@ -3,9 +3,10 @@ import App from './App.vue'
 import './assets/main.scss'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/pages/HomePage.vue'
-import MammalPage from '@/pages/MammalPage.vue'
+import SpeciesPage from '@/pages/SpeciesPage.vue'
 import { createTranslator, setGlobalTranslator } from '@/locales/translator'
 import de from './locales/de.json'
+import FavoritesPage from '@/pages/FavoritesPage.vue'
 
 const app = createApp(App)
 
@@ -14,7 +15,8 @@ setGlobalTranslator(translator)
 
 const routes = [
   { path: '/', component: HomePage },
-  { path: '/species/:id', component: MammalPage }
+  { path: '/favorites/:index', component: FavoritesPage },
+  { path: '/species/:id', component: SpeciesPage }
 ]
 const router = createRouter({ history: createWebHistory(), routes })
 app.use(router)
