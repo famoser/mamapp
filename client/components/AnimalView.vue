@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Animal } from '@/domain/Animal'
 import AnimalText from '@/components/AnimalText.vue'
-import ImageCarousel from '@/components/ImageCarousel.vue'
+import ImageCarousel from '@/components/library/ImageCarousel.vue'
 
 defineProps<{
   animal: Animal

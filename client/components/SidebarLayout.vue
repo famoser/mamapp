@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Offcanvas } from 'bootstrap'
-import MenuEntry from '@/components/MenuEntry.vue'
-import MenuHeader from '@/components/MenuHeader.vue'
-import { useRouter } from 'vue-router'
+import MenuEntry from '@/components/library/MenuEntry.vue'
+import MenuHeader from '@/components/library/MenuHeader.vue'
 
 const offcanvasElement = ref<HTMLElement | null>(null)
 let offcanvasInstance: Offcanvas | null = null
@@ -17,15 +16,13 @@ onMounted(() => {
 const toggleMenu = () => {
   offcanvasInstance?.toggle()
 }
-
-const router = useRouter()
 </script>
 
 <template>
   <nav class="navbar sticky-top border-bottom bg-primary-subtler mb-3">
     <div class="d-flex gap-2 justify-content-between w-100 ms-1">
-      <button class="btn btn-icon py-1" @click="router.push('/')" aria-label="Toggle menu">
-        <i class="icon icon-arrow-left" />
+      <button class="btn btn-icon py-1" @click="toggleMenu" aria-label="Toggle menu">
+        <i class="icon icon-bars" />
       </button>
       <slot />
     </div>
@@ -39,7 +36,7 @@ const router = useRouter()
       <div class="d-flex gap-3">
         <i class="icon icon-brand icon-xl align-self-center" />
         <div>
-          <h1 class="mb-0">Mammal Guide Europe</h1>
+          <h2 class="mb-0">Mammal Guide Europe</h2>
           <p class="byline text-muted mb-0">Explore · Learn · Protect</p>
         </div>
       </div>

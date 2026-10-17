@@ -3,10 +3,11 @@ import { useRoute, useRouter } from 'vue-router'
 import { useMammalsState } from '@/services/state'
 import { useDatabase } from '@/services/data'
 import { computed } from 'vue'
-import NavLayout from '@/components/NavLayout.vue'
+import NavLayout from '@/components/library/NavLayout.vue'
 import AnimalView from '@/components/AnimalView.vue'
-import ContentSlider from '@/components/ContentSlider.vue'
+import ContentSlider from '@/components/library/ContentSlider.vue'
 import type { Animal } from '@/domain/Animal'
+import { useTranslator } from '@/locales/translator'
 
 const route = useRoute()
 const speciesId = computed(() => route.params.id)
@@ -45,6 +46,7 @@ const swipeCompleted = function (swipeDirection: 'before' | 'after') {
     router.push('/species/' + nextAnimalId.value)
   }
 }
+const { t } = useTranslator()
 
 const router = useRouter()
 </script>
@@ -52,7 +54,7 @@ const router = useRouter()
 <template>
   <div v-if="animal">
     <nav-layout>
-      <div v-if="favorites.includes(animal.id) && favorites.length > 1" class="align-self-center text-muted">{{ currentAnimalIndex + 1 }} / {{ favorites.length }} Pinned</div>
+      <div v-if="favorites.includes(animal.id) && favorites.length > 1" class="align-self-center text-muted">{{ currentAnimalIndex + 1 }} / {{ favorites.length }} {{ t('pages.home.favorites') }}</div>
       <div v-if="favorites.includes(animal.id) && favorites.length > 1">
         <button class="btn btn-icon py-1" @click="router.push('/species/' + previousAnimalId)" aria-label="Previous animal">
           <i class="icon icon-chevron-left" />
