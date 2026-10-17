@@ -3,6 +3,7 @@ import AnimalPreview from '@/components/AnimalPreview.vue'
 import type { Animal } from '@/domain/Animal'
 import { onMounted, ref } from 'vue'
 import { Collapse } from 'bootstrap'
+import { useTranslator } from '@/locales/translator'
 
 withDefaults(
   defineProps<{
@@ -34,6 +35,7 @@ const toggleCollapse = () => {
   collapseState.value = !collapseState.value
   collapseInstance?.toggle()
 }
+const { t } = useTranslator()
 </script>
 
 <template>
@@ -48,7 +50,7 @@ const toggleCollapse = () => {
     >
       <p class="mb-1 fw-bold">{{ family }}</p>
       <span class="d-flex align-items-center gap-2 text-muted small">
-        <span>{{ animals.length }} species</span>
+        <span>{{ t('view.family.species', { count: animals.length }) }}</span>
         <i class="icon icon-chevron-left" :class="{ 'turn-90-ccw': !collapseState }"></i>
       </span>
     </div>

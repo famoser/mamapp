@@ -1,7 +1,9 @@
 {
   "pages": {
     "home": {
-      "title": "Liste"
+      "title": "Liste",
+      "search": "Arten suchen",
+      "favorites": "Favoriten"
     },
     "mammal": {
       "title": "Wahlquittung hochladen"
@@ -15,5 +17,10 @@
     "yes": "Ja",
     "verify": "Überprüfen",
     "no": "Nein"
+  },
+  "view": {
+    "family": {
+      "species": "1 Art | {count} Arten"
+    }
   }
 }

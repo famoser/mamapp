@@ -4,12 +4,14 @@ import FamilyCollapse from '@/components/FamilyCollapse.vue'
 import { computed, ref } from 'vue'
 import { useMammalsState } from '@/services/state'
 import type { Animal } from '@/domain/Animal'
-import MenuLayout from '@/components/MenuLayout.vue'
+import SidebarLayout from '@/components/SidebarLayout.vue'
+import { useTranslator } from '@/locales/translator'
 
 const { favorites, toggleFavorite } = useMammalsState()
 
 const search = ref('')
 
+const { t } = useTranslator()
 const { species } = useDatabase()
 const animalsByFamily = computed(() => {
   const map = new Map<string, Animal[]>()
@@ -32,16 +34,16 @@ const favoriteAnimals = computed(() => {
 </script>
 
 <template>
-  <menu-layout>
+  <sidebar-layout>
     <div class="input-group mw-20em me-1">
       <span class="input-group-text">
         <i class="icon icon-magnifying-glass icon-sm" />
       </span>
-      <input type="text" class="form-control" placeholder="Spezies suchen..." v-model="search" />
+      <input type="text" class="form-control" :placeholder="t('pages.home.search')" v-model="search" />
     </div>
-  </menu-layout>
+  </sidebar-layout>
   <div class="mb-5" v-if="favoriteAnimals.length > 0">
-    <h3 class="mb-2">Pinned</h3>
+    <h3 class="mb-2">{{ t('pages.home.favorites') }}</h3>
     <family-collapse family="Pinned" :animals="favoriteAnimals" :favorites="favorites" @toggle-favorite="toggleFavorite($event.id)" :header="false" />
   </div>
 
