@@ -70,7 +70,7 @@ const toggleMenu = () => {
       </div>
       <div class="mb-5">
         <menu-header :label="t('layout.sidebar.about')" />
-        <menu-entry :label="t('layout.sidebar.contactUs')" icon="icon-envelope" />
+        <menu-entry :label="t('layout.sidebar.contactUs')" icon="icon-envelope" :active="route.fullPath === '/contact-us'" @click="navigateTo('/contact-us')" />
         <menu-entry :label="t('layout.sidebar.acknowledgements')" icon="icon-award" />
         <menu-entry :label="t('layout.sidebar.sources')" icon="icon-books" />
       </div>
