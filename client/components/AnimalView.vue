@@ -11,7 +11,7 @@ defineProps<{
 
 <template>
   <image-carousel :images="animal.images" />
-  <audio-play v-if="animal.calls.length > 0" :calls="animal.calls" />
+  <audio-play class="mt-3" v-if="animal.calls.length > 0" :calls="animal.calls" />
   <h1 class="text-primary-emphasis mt-5 mb-1">{{ animal.name }}</h1>
   <p class="text-muted">
     <i>{{ animal.latinName }}</i>
@@ -21,9 +21,9 @@ defineProps<{
     <img :src="animal.mapSrc" class="img-fluid border-1 border rounded-1" :alt="'Map of ' + animal.name" />
 
     <animal-text icon="icon-books" label="Beschreibung" :text="animal.description" />
-    <animal-text icon="icon-almost-equal-to" label="Ähnliche Spezies" :text="animal.similarSpecies" />
+    <animal-text icon="icon-almost-equal-to" label="Ähnliche Arten" :text="animal.similarSpecies" />
     <animal-text icon="icon-tree" label="Lebensraum" :text="animal.habitat" />
     <animal-text icon="icon-binoculars" label="Wie beobachten" :text="animal.observe" />
-    <animal-text icon="icon-leaf" label="Schutzstatus" :text="animal.conservation" />
+    <animal-text icon="icon-leaf" label="Schutz und Förderung" :text="animal.conservation" />
   </div>
 </template>

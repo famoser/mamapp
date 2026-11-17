@@ -41,7 +41,7 @@ function onAudioEnded(index: number): void {
 
 <template>
   <div class="d-flex flex-column gap-2">
-    <div class="d-flex gap-2 align-items-center my-2" v-for="(call, index) in calls" :key="call.src">
+    <div class="d-flex gap-2 align-items-center" v-for="(call, index) in calls" :key="call.src">
       <button
         class="btn btn-outline-secondary"
         :class="{ 'btn-secondary': currentlyPlayingIndex === index }"
