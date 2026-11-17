@@ -58,4 +58,18 @@ const next = () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 50px;
+  height: 50px;
+}
+.carousel-control-prev,
+.carousel-control-next {
+  opacity: 0.7;
+}
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  opacity: 1;
+}
+</style>
