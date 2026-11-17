@@ -21,7 +21,7 @@ const { t } = useTranslator()
 
     <h1>{{ t('pages.text.' + textKey + '.title') }}</h1>
     <hr class="w-100 mb-3" />
-    <div class="text-justify" v-html="t('pages.text.' + textKey + '.content')"></div>
+    <div class="text-justify reader-mode" v-html="t('pages.text.' + textKey + '.content')"></div>
     <hr class="w-100 mb-3" />
     <p class="text-muted">{{ t('pages.text.footer') }}</p>
   </div>
